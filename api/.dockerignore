@@ -1,0 +1,6 @@
+.git
+.gitignore
+.idea
+*.iml
+target/*
+!target/student-sync-api.war
