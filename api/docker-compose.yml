@@ -1,13 +1,11 @@
-# docker-compose.yml
-version: '3.8'
-
 services:
   webapp:
     build: .
     ports:
       - "8080:8080"
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     networks:
       - spring_mvc_net
 
@@ -16,8 +14,6 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: rootpassword
       MYSQL_DATABASE: studentSyncDB
-      MYSQL_USER: root
-      MYSQL_PASSWORD: rootpassword
     ports:
       - "3306:3306"
     volumes:
@@ -25,6 +21,10 @@ services:
     networks:
       - spring_mvc_net
     command: --default-authentication-plugin=mysql_native_password
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      retries: 5
 
   adminer:
     image: adminer

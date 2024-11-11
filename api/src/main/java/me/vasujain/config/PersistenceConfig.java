@@ -3,6 +3,7 @@ package me.vasujain.config;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
@@ -14,6 +15,7 @@ import java.util.Properties;
 
 @Configuration
 @EnableTransactionManagement
+@ComponentScan(basePackages = "me.vasujain") // Update base package as necessary
 public class PersistenceConfig {
 
     @Bean
@@ -31,16 +33,15 @@ public class PersistenceConfig {
     public LocalSessionFactoryBean sessionFactory(DataSource dataSource) {
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
         sessionFactory.setDataSource(dataSource);
-        sessionFactory.setPackagesToScan("com.example.model");
+        sessionFactory.setPackagesToScan("me.vasujain.model");
 
         Properties hibernateProperties = new Properties();
         hibernateProperties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
         hibernateProperties.setProperty("hibernate.show_sql", "true");
         hibernateProperties.setProperty("hibernate.format_sql", "true");
-        hibernateProperties.setProperty("hibernate.hbm2ddl.auto", "update");
+        hibernateProperties.setProperty("hibernate.hbm2ddl.auto", "update"); // Set to `validate` or `none` in production
 
         sessionFactory.setHibernateProperties(hibernateProperties);
-
         return sessionFactory;
     }
 
