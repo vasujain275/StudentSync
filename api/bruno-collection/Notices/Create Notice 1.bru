@@ -1,0 +1,19 @@
+meta {
+  name: Create Notice 1
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{base}}/notices
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "title":"Semester Registration Open",
+    "notice":"Students now can regiser for courses in new semester",
+    "date": "2024-11-19"
+  }
+}
