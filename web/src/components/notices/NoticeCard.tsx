@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { Bell } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
 
 interface Notice {
   id: string; // UUID from the API
@@ -13,6 +15,7 @@ export const NoticeCard = () => {
   const [notices, setNotices] = useState<Notice[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [selectedNotice, setSelectedNotice] = useState<Notice | null>(null);
 
   useEffect(() => {
     const fetchNotices = async () => {
@@ -43,7 +46,7 @@ export const NoticeCard = () => {
       </h2>
       <div className="space-y-4">
         {notices.map((notice) => (
-          <Card key={notice.id}>
+          <Card key={notice.id} onClick={() => setSelectedNotice(notice)} className="cursor-pointer">
             <CardHeader>
               <CardTitle>{notice.title}</CardTitle>
             </CardHeader>
@@ -53,6 +56,20 @@ export const NoticeCard = () => {
           </Card>
         ))}
       </div>
+
+      {/* Dialog for displaying notice details */}
+      <Dialog open={!!selectedNotice} onOpenChange={() => setSelectedNotice(null)}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>{selectedNotice?.title}</DialogTitle>
+            <DialogDescription>{selectedNotice?.date}</DialogDescription>
+          </DialogHeader>
+          <p>{selectedNotice?.notice}</p>
+          <Button className="mt-4" onClick={() => setSelectedNotice(null)}>
+            Close
+          </Button>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
