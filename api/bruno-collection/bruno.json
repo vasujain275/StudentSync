@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "Student Sync API Testing",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}
