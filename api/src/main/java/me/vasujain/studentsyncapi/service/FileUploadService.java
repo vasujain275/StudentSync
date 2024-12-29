@@ -31,7 +31,7 @@ public class FileUploadService {
                 .build();
     }
 
-    public String uploadFile(MultipartFile file) throws IOException{
+    public String uploadAvatar(MultipartFile file) throws IOException{
         String key = "avatars/" + System.currentTimeMillis() + "-" + file.getOriginalFilename();
         s3Client.putObject(
                 PutObjectRequest.builder()

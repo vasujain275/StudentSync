@@ -17,12 +17,9 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
-    @Autowired
-    private FileUploadService fileUploadService;
 
-    public User register(RegisterUserDTO dto, MultipartFile avatar) throws IOException {
+    public User register(RegisterUserDTO dto)  {
 
-        String avatarUrl = fileUploadService.uploadFile(avatar);
 
         User user = User.builder()
                 .username(dto.getUsername())
@@ -31,7 +28,7 @@ public class UserService {
                 .role(dto.getRole() != null ? dto.getRole() : "Student")
                 .firstName(dto.getFirstName())
                 .lastName(dto.getLastName())
-                .avatar(avatarUrl)
+                .avatar(null)
                 .build();
         return userRepository.save(user);
     }

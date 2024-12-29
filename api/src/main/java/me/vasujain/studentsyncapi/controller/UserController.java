@@ -5,7 +5,7 @@ import me.vasujain.studentsyncapi.model.User;
 import me.vasujain.studentsyncapi.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,7 +18,7 @@ public class UserController {
     private UserService service;
 
     @PostMapping("/api/register")
-    public User register(@RequestPart RegisterUserDTO registerUserDTO, @RequestPart MultipartFile avatar) throws IOException {
-        return service.register(registerUserDTO, avatar);
+    public User register(@RequestBody RegisterUserDTO registerUserDTO) {
+        return service.register(registerUserDTO);
     }
 }
