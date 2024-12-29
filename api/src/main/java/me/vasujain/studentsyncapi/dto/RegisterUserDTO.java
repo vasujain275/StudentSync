@@ -10,5 +10,4 @@ public class RegisterUserDTO {
     private String role;
     private String firstName;
     private String lastName;
-    private String avatar;
 }

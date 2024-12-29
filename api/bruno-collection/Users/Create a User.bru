@@ -6,7 +6,7 @@ meta {
 
 post {
   url: {{base}}/register
-  body: json
+  body: multipartForm
   auth: basic
 }
 
@@ -15,15 +15,21 @@ auth:basic {
   password: root
 }
 
-body:json {
-  {
-    "username": "jatin",
-    "email": "jatin@example.com",
-    "password": "root",
-    "role": "student",
-    "firstName": "Jatin",
-    "lastName": "Gupta",
-    "avatar": null
-  }
-  
+body:form-urlencoded {
+  : 
+}
+
+body:multipart-form {
+  registerUserDTO: '''
+    {
+      "username": "test",
+      "email": "test@example.com",
+      "password": "root",
+      "role": "student",
+      "firstName": "Test",
+      "lastName": "Test",
+    }
+  '''
+  avatar: @file(/home/vasu/Pictures/icon.jpeg)
+  : 
 }
