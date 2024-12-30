@@ -17,7 +17,7 @@ public class UserController {
     @Autowired
     private UserService service;
 
-    @PostMapping("/api/register")
+    @PostMapping("/superadmin/register")
     public User register(@RequestBody RegisterUserDTO registerUserDTO) {
         return service.register(registerUserDTO);
     }
