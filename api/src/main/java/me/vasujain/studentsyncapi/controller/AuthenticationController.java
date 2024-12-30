@@ -5,7 +5,6 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import me.vasujain.studentsyncapi.dto.AuthenticationResponse;
 import me.vasujain.studentsyncapi.dto.LoginRequest;
-import me.vasujain.studentsyncapi.dto.RefreshTokenRequest;
 import me.vasujain.studentsyncapi.service.AuthenticationService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -39,11 +38,10 @@ public class AuthenticationController {
      */
     @PostMapping("/refresh")
     public ResponseEntity<AuthenticationResponse> refreshToken(
-            @CookieValue(name = "accessToken", required = false) String accessToken,
-            @RequestBody RefreshTokenRequest refreshRequest,
+            @CookieValue(name = "refreshToken", required = false) String refreshToken,
             HttpServletResponse response
     ) {
-        AuthenticationResponse authResponse = authenticationService.refreshToken(refreshRequest, response);
+        AuthenticationResponse authResponse = authenticationService.refreshToken(refreshToken, response);
         return ResponseEntity.ok(authResponse);
     }
 

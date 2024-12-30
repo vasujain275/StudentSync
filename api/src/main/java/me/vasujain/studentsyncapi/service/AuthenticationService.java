@@ -5,7 +5,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import me.vasujain.studentsyncapi.dto.AuthenticationResponse;
 import me.vasujain.studentsyncapi.dto.LoginRequest;
-import me.vasujain.studentsyncapi.dto.RefreshTokenRequest;
 import me.vasujain.studentsyncapi.exception.InvalidTokenException;
 import me.vasujain.studentsyncapi.model.User;
 import me.vasujain.studentsyncapi.model.UserPrincipal;
@@ -37,6 +36,9 @@ public class AuthenticationService {
     @Value("${jwt.access-token.expiration}")
     private long accessTokenExpiration;
 
+    @Value("${jwt.refresh-token.expiration}")
+    private long refreshTokenExpiration;
+
     @Value("${spring.profiles.active}")
     private String activeProfile;
 
@@ -63,23 +65,24 @@ public class AuthenticationService {
         user.setRefreshToken(refreshToken);
         userRepository.save(user);
 
-        // Set secure cookie
-        setSecureCookie(response, "accessToken", accessToken);
+        // Set secure cookies
+        setCookie(response, "accessToken", accessToken, accessTokenExpiration);
+        setCookie(response, "refreshToken", refreshToken, refreshTokenExpiration);
 
-        return buildAuthenticationResponse(user, refreshToken);
+        return buildAuthenticationResponse(user);
     }
 
     /**
      * Refreshes the access token and updates the HTTP-only cookie.
      */
-    public AuthenticationResponse refreshToken(RefreshTokenRequest request, HttpServletResponse response) {
-        String refreshToken = request.getRefreshToken();
+    public AuthenticationResponse refreshToken(String refreshToken, HttpServletResponse response) {
         String username = jwtService.extractUsername(refreshToken);
 
         User user = userRepository.findByUsername(username);
         UserDetails userPrincipal = new UserPrincipal(user);
 
         // Validate refresh token
+        assert refreshToken != null;
         if (!refreshToken.equals(user.getRefreshToken()) || !jwtService.isTokenValid(refreshToken, userPrincipal)) {
             throw new InvalidTokenException("Invalid or expired refresh token");
         }
@@ -92,10 +95,11 @@ public class AuthenticationService {
         user.setRefreshToken(newRefreshToken);
         userRepository.save(user);
 
-        // Update cookie
-        setSecureCookie(response, "accessToken", newAccessToken);
+        // Set secure cookies
+        setCookie(response, "accessToken", newAccessToken, accessTokenExpiration);
+        setCookie(response, "refreshToken", newRefreshToken, refreshTokenExpiration);
 
-        return buildAuthenticationResponse(user, newRefreshToken);
+        return buildAuthenticationResponse(user);
     }
 
     /**
@@ -109,89 +113,54 @@ public class AuthenticationService {
         user.setRefreshToken(null);
         userRepository.save(user);
 
-        // Clear cookie
+        // Clear cookies
         clearCookie(response, "accessToken");
+        clearCookie(response, "refreshToken");
     }
 
     /**
-     * Sets a secure HTTP-only cookie with appropriate security attributes.
+     * Helper method to add cookies with domain and other secure attributes.
      */
-    private void setSecureCookie(HttpServletResponse response, String name, String value) {
+    private void setCookie(HttpServletResponse response, String name, String value, long expiry) {
         boolean isDevEnvironment = "dev".equals(activeProfile);
 
-        // Build the cookie with basic attributes
         Cookie cookie = new Cookie(name, value);
         cookie.setHttpOnly(true);
-        cookie.setSecure(!isDevEnvironment); // Only false in development
-        cookie.setPath("/");
-        cookie.setMaxAge((int) (accessTokenExpiration/60));
+        cookie.setSecure(!isDevEnvironment);  // Ensure the cookie is only secure in production
+        cookie.setPath("/");  // Ensure it works across the entire domain
+        cookie.setMaxAge((int) expiry);  // Set expiration time in seconds
+        cookie.setDomain(cookieDomain);
 
-        // Special handling for localhost
-        if (!isDevEnvironment && cookieDomain != null) {
-            cookie.setDomain(cookieDomain);
-        }
-
-        // Add the cookie to the response
-        response.addCookie(cookie);
-
-        // Set additional attributes through header for broader compatibility
-        StringBuilder cookieHeader = new StringBuilder();
-        cookieHeader.append(String.format("%s=%s", name, value));
-        cookieHeader.append("; Path=/");
-        cookieHeader.append("; HttpOnly");
-
+        // Set SameSite attribute for security
         if (!isDevEnvironment) {
-            cookieHeader.append("; Secure");
-            cookieHeader.append("; SameSite=Strict");
-            if (cookieDomain != null) {
-                cookieHeader.append("; Domain=").append(cookieDomain);
-            }
-        } else {
-            cookieHeader.append("; SameSite=Lax");
+            cookie.setHttpOnly(true);
         }
 
-        response.setHeader("Set-Cookie", cookieHeader.toString());
+        // Add cookie to response
+        response.addCookie(cookie);
     }
 
+    /**
+     * Helper method to clear cookies (logout).
+     */
     private void clearCookie(HttpServletResponse response, String name) {
-        boolean isDevEnvironment = "dev".equals(activeProfile);
-
-        // Build the cookie for clearing
-        Cookie cookie = new Cookie(name, "");
+        Cookie cookie = new Cookie(name, null);  // Set cookie value to null
         cookie.setHttpOnly(true);
-        cookie.setSecure(!isDevEnvironment);
-        cookie.setPath("/");
-        cookie.setMaxAge(0);
+        cookie.setSecure(true);  // Secure cookie
+        cookie.setPath("/");  // Ensure it works across the entire domain
+        cookie.setMaxAge(0);  // Expire immediately
 
-        if (!isDevEnvironment && cookieDomain != null) {
+        // Set domain attribute if necessary
+        if (cookieDomain != null) {
             cookie.setDomain(cookieDomain);
         }
 
+        // Clear the cookie from the browser
         response.addCookie(cookie);
-
-        // Set additional attributes through header
-        StringBuilder cookieHeader = new StringBuilder();
-        cookieHeader.append(String.format("%s=", name));
-        cookieHeader.append("; Path=/");
-        cookieHeader.append("; HttpOnly");
-        cookieHeader.append("; Max-Age=0");
-
-        if (!isDevEnvironment) {
-            cookieHeader.append("; Secure");
-            cookieHeader.append("; SameSite=Strict");
-            if (cookieDomain != null) {
-                cookieHeader.append("; Domain=").append(cookieDomain);
-            }
-        } else {
-            cookieHeader.append("; SameSite=Lax");
-        }
-
-        response.setHeader("Set-Cookie", cookieHeader.toString());
     }
 
-    private AuthenticationResponse buildAuthenticationResponse(User user, String refreshToken) {
+    private AuthenticationResponse buildAuthenticationResponse(User user) {
         return AuthenticationResponse.builder()
-                .refreshToken(refreshToken)
                 .userRole(user.getRole().name())
                 .username(user.getUsername())
                 .build();
