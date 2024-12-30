@@ -1,11 +1,11 @@
 meta {
-  name: Test
+  name: Health Check
   type: http
-  seq: 1
+  seq: 2
 }
 
 get {
-  url: {{base}}/superadmin/hello
+  url: {{base}}/health
   body: none
   auth: none
 }

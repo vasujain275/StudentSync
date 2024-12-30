@@ -1,0 +1,18 @@
+meta {
+  name: Student Login
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{base}}/auth/login
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "username":"moniya",
+    "password":"root"
+  }
+}

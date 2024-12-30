@@ -1,0 +1,32 @@
+meta {
+  name: Create a Student
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{base}}/auth/register
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "username": "Moniya",
+    "email": "moniya@example.com",
+    "password": "root",
+    "role": "STUDENT",
+    "firstName": "Moniya",
+    "lastName": "Dhinghra"
+  }
+}
+
+body:form-urlencoded {
+  : 
+}
+
+body:multipart-form {
+  registerUserDTO: 
+  avatar: @file(/home/vasu/Pictures/icon.jpeg)
+  : 
+}

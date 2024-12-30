@@ -1,0 +1,32 @@
+meta {
+  name: Create a Super Admin
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{base}}/auth/register
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "username": "vasu",
+    "email": "vasu@example.com",
+    "password": "root",
+    "role": "SUPER_ADMIN",
+    "firstName": "Vasu",
+    "lastName": "Jain"
+  }
+}
+
+body:form-urlencoded {
+  : 
+}
+
+body:multipart-form {
+  registerUserDTO: 
+  avatar: @file(/home/vasu/Pictures/icon.jpeg)
+  : 
+}

@@ -1,0 +1,32 @@
+meta {
+  name: Create a Admin
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{base}}/auth/register
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "username": "Jatin",
+    "email": "jatin@example.com",
+    "password": "root",
+    "role": "ADMIN",
+    "firstName": "Jatin",
+    "lastName": "Gupta"
+  }
+}
+
+body:form-urlencoded {
+  : 
+}
+
+body:multipart-form {
+  registerUserDTO: 
+  avatar: @file(/home/vasu/Pictures/icon.jpeg)
+  : 
+}
