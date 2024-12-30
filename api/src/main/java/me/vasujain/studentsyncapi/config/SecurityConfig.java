@@ -40,6 +40,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         // Public endpoints that don't require authentication
                         .requestMatchers("/auth/**").permitAll()
+                        .requestMatchers("/health").permitAll()
+                        .requestMatchers("/notice").permitAll()
 
                         // Role-based access control for different paths
                         .requestMatchers("/admin/**").hasRole("ADMIN")

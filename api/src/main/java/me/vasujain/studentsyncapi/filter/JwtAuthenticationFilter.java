@@ -2,6 +2,7 @@ package me.vasujain.studentsyncapi.filter;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -34,19 +35,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             @NonNull HttpServletResponse response,
             @NonNull FilterChain filterChain
     ) throws ServletException, IOException {
-        // Extract the Authorization header from the request
-        final String authHeader = request.getHeader("Authorization");
+        // Extract JWT from cookies
+        final String jwt = getJwtFromCookies(request);
 
-        // If no Authorization header or not a Bearer token, continue to the next filter
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+        // If no JWT found, continue to the next filter
+        if (jwt == null) {
             filterChain.doFilter(request, response);
             return;
         }
 
         try {
-            // Extract the JWT token (remove "Bearer " prefix)
-            final String jwt = authHeader.substring(7);
-
             // Extract username from the JWT token
             final String username = jwtService.extractUsername(jwt);
 
@@ -76,16 +74,30 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 }
             }
 
-            // Continue the filter chain
-            filterChain.doFilter(request, response);
-
         } catch (Exception e) {
-            // Log the error (you might want to use a proper logging framework)
+            // Log the error (optional: use a proper logging framework here)
             System.err.println("JWT Authentication error: " + e.getMessage());
-
-            // Continue the filter chain even if authentication fails
-            // Security context remains unchanged, so the request will still be unauthorized
-            filterChain.doFilter(request, response);
         }
+
+        // Continue the filter chain
+        filterChain.doFilter(request, response);
+    }
+
+    /**
+     * Helper method to extract JWT token from cookies.
+     */
+    private String getJwtFromCookies(HttpServletRequest request) {
+        if (request.getCookies() == null) {
+            return null;
+        }
+
+        // Look for the cookie named "accessToken"
+        for (Cookie cookie : request.getCookies()) {
+            if ("accessToken".equals(cookie.getName())) {
+                return cookie.getValue();
+            }
+        }
+
+        return null; // No JWT found in cookies
     }
 }
