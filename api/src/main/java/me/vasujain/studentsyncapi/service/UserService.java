@@ -1,6 +1,7 @@
 package me.vasujain.studentsyncapi.service;
 
 import me.vasujain.studentsyncapi.dto.RegisterUserDTO;
+import me.vasujain.studentsyncapi.model.Role;
 import me.vasujain.studentsyncapi.model.User;
 import me.vasujain.studentsyncapi.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,7 @@ public class UserService {
                 .username(dto.getUsername())
                 .password(passwordEncoder.encode(dto.getPassword()))
                 .email(dto.getEmail())
-                .role(dto.getRole() != null ? dto.getRole() : "Student")
+                .role(Role.valueOf(dto.getRole()))
                 .firstName(dto.getFirstName())
                 .lastName(dto.getLastName())
                 .avatar(null)
