@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import me.vasujain.studentsyncapi.dto.AuthenticationResponse;
 import me.vasujain.studentsyncapi.dto.LoginRequest;
 import me.vasujain.studentsyncapi.service.AuthenticationService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,6 +18,8 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/auth")
 @RequiredArgsConstructor
 public class AuthenticationController {
+
+    @Autowired
     private final AuthenticationService authenticationService;
 
     /**
