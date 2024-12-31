@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { Bell } from "lucide-react";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import {
   Dialog,
   DialogContent,
@@ -42,29 +41,27 @@ export const NoticeCard = () => {
     fetchNotices();
   }, []);
 
-  if (loading) return <div>Loading notices...</div>;
-  if (error) return <div>{error}</div>;
-
   return (
-    <div>
-      <h2 className="text-lg font-bold mb-4 flex items-center">
-        <Bell className="mr-2" /> Latest Notices
+    <div className="max-w-md w-full p-6 bg-white shadow-md rounded-md">
+      <h2 className="text-xl font-semibold mb-4 flex items-center gap-2 text-blue-600">
+        <Bell className="h-6 w-6" />
+        Latest Notices
       </h2>
       <div className="space-y-4">
-        {notices.map((notice) => (
-          <Card
-            key={notice.id}
-            onClick={() => setSelectedNotice(notice)}
-            className="cursor-pointer"
-          >
-            <CardHeader>
-              <CardTitle>{notice.title}</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p>{notice.date}</p>
-            </CardContent>
-          </Card>
-        ))}
+        {loading && <p>Loading notices...</p>}
+        {error && <p className="text-red-500">{error}</p>}
+        {!loading &&
+          !error &&
+          notices.map((notice) => (
+            <div
+              key={notice.id}
+              className="p-4 border rounded-md cursor-pointer hover:bg-gray-50 transition"
+              onClick={() => setSelectedNotice(notice)}
+            >
+              <h3 className="text-base font-semibold">{notice.title}</h3>
+              <p className="text-sm text-gray-600">{notice.date}</p>
+            </div>
+          ))}
       </div>
 
       {/* Dialog for displaying notice details */}
@@ -74,11 +71,18 @@ export const NoticeCard = () => {
       >
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>{selectedNotice?.title}</DialogTitle>
-            <DialogDescription>{selectedNotice?.date}</DialogDescription>
+            <DialogTitle className="text-lg font-bold">
+              {selectedNotice?.title}
+            </DialogTitle>
+            <DialogDescription className="text-sm text-gray-500">
+              {selectedNotice?.date}
+            </DialogDescription>
           </DialogHeader>
-          <p>{selectedNotice?.notice}</p>
-          <Button className="mt-4" onClick={() => setSelectedNotice(null)}>
+          <p className="text-sm text-gray-800 mt-2">{selectedNotice?.notice}</p>
+          <Button
+            className="mt-4 bg-blue-600 hover:bg-blue-700"
+            onClick={() => setSelectedNotice(null)}
+          >
             Close
           </Button>
         </DialogContent>
