@@ -1,0 +1,19 @@
+meta {
+  name: Create Notice 3
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{base}}/notice
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "title":"Fee Submition last date for even semester.",
+    "notice":"12 Janurary 2025 is last date fee sumbition for even semester",
+    "date": "2024-12-09"
+  }
+}
