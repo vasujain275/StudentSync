@@ -5,16 +5,19 @@ import { Label } from "@/components/ui/label";
 
 export const LoginForm = () => {
   return (
-    <Card className="w-full max-w-sm mx-auto p-6">
+    <Card className="w-full max-w-sm mx-auto p-6 bg-card">
       <CardHeader>
-        <CardTitle className="text-lg font-semibold text-center">
+        <CardTitle className="text-lg font-semibold text-center text-primary">
           Login
         </CardTitle>
       </CardHeader>
       <CardContent>
         <form className="space-y-4">
           <div>
-            <Label htmlFor="username" className="text-sm font-medium">
+            <Label
+              htmlFor="username"
+              className="text-sm font-medium text-muted-foreground"
+            >
               Username
             </Label>
             <Input
@@ -25,7 +28,10 @@ export const LoginForm = () => {
             />
           </div>
           <div>
-            <Label htmlFor="password" className="text-sm font-medium">
+            <Label
+              htmlFor="password"
+              className="text-sm font-medium text-muted-foreground"
+            >
               Password
             </Label>
             <Input
@@ -35,7 +41,7 @@ export const LoginForm = () => {
               className="mt-1"
             />
           </div>
-          <Button className="w-full bg-blue-600 hover:bg-blue-700 text-base">
+          <Button className="w-full bg-primary hover:bg-primary-dark text-base text-primary-foreground">
             Login
           </Button>
         </form>
