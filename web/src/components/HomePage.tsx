@@ -1,6 +1,6 @@
-import { Navbar } from "@/components/layout/Navbar";
-import { NoticeCard } from "@/components/notices/NoticeCard";
-import { LoginForm } from "@/components/auth/LoginForm";
+import { Navbar } from '@/components/layout/Navbar';
+import { NoticeCard } from '@/components/notices/NoticeCard';
+import { LoginForm } from '@/components/auth/LoginForm';
 
 const HomePage = () => {
   return (

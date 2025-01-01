@@ -1,5 +1,5 @@
-import { HelpCircle, School } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { HelpCircle, School } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 export const Navbar = () => {
   return (

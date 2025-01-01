@@ -1,13 +1,13 @@
-import { useEffect, useState } from "react";
-import { Bell } from "lucide-react";
+import { useEffect, useState } from 'react';
+import { Bell } from 'lucide-react';
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogDescription,
-} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
+} from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
 
 interface Notice {
   id: string; // UUID from the API
@@ -25,14 +25,14 @@ export const NoticeCard = () => {
   useEffect(() => {
     const fetchNotices = async () => {
       try {
-        const response = await fetch("/api/v1/notice");
+        const response = await fetch('/api/v1/notice');
         if (!response.ok) {
           throw new Error(`Error: ${response.statusText}`);
         }
         const data: Notice[] = await response.json();
         setNotices(data);
       } catch (err) {
-        setError("Failed to load notices.");
+        setError('Failed to load notices.');
       } finally {
         setLoading(false);
       }
