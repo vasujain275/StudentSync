@@ -1,0 +1,17 @@
+studentsync-api.vasujain.me {
+    reverse_proxy api:8080 {
+        header_up Host {host}
+        header_up X-Real-IP {remote}
+        header_up X-Forwarded-For {remote}
+        header_up X-Forwarded-Proto {scheme}
+    }
+
+    log {
+        output file /var/log/caddy/access.log
+        format json
+    }
+
+    tls {
+        protocols tls1.2 tls1.3
+    }
+}
