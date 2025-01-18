@@ -4,7 +4,7 @@ on:
   push:
     branches: ["main"]
     paths:
-      - "pom.xml"
+      - "./api/pom.xml"
 
 jobs:
   check_version:
@@ -26,6 +26,9 @@ jobs:
       - name: Check if version changed
         id: version_check
         run: |
+          # Navigate to the api/ directory
+          cd api
+
           # Get current version
           CURRENT_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
 
@@ -73,7 +76,7 @@ jobs:
         if: steps.version_check.outputs.changed == 'true'
         uses: docker/build-push-action@v6
         with:
-          context: .
+          context: ./api # Set Docker context to the api/ subfolder
           push: true
           platforms: linux/amd64,linux/arm64
           tags: ${{ steps.meta.outputs.tags }}
