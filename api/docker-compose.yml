@@ -1,10 +1,11 @@
 services:
   api:
-    build: .
+    image: vasujain275/studentsync-api:${VERSION:-latest}
     container_name: studentsync-api
+    restart: unless-stopped
     env_file: .env
     environment:
-      - PROD_DB_HOST=db
+      - SPRING_PROFILES_ACTIVE=prod
     depends_on:
       db:
         condition: service_healthy
@@ -24,28 +25,41 @@ services:
       timeout: 3s
       retries: 3
       start_period: 60s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
 
   db:
     image: postgres:16-alpine
     container_name: studentsync-db
+    restart: unless-stopped
     environment:
       POSTGRES_USER: ${PG_USERNAME}
       POSTGRES_PASSWORD: ${PG_PASSWORD}
+      POSTGRES_DB: ${PROD_DB_NAME}
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./init-db.sh:/docker-entrypoint-initdb.d/init-db.sh
     networks:
       - studentsync-network
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${PG_USERNAME}"]
+      test: ["CMD-SHELL", "pg_isready -U ${PG_USERNAME} -d ${PROD_DB_NAME}"]
       interval: 10s
       timeout: 5s
       retries: 5
       start_period: 10s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
 
   caddy:
     image: caddy:2-alpine
     container_name: studentsync-caddy
+    restart: unless-stopped
     ports:
       - "80:80"
       - "443:443"
@@ -72,12 +86,21 @@ services:
       timeout: 3s
       retries: 3
       start_period: 30s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
 
 volumes:
   postgres_data:
+    name: studentsync_postgres_data
   caddy_data:
+    name: studentsync_caddy_data
   caddy_config:
+    name: studentsync_caddy_config
 
 networks:
   studentsync-network:
+    name: studentsync_network
     driver: bridge
