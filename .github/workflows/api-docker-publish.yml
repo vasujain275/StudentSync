@@ -14,25 +14,18 @@ jobs:
         with:
           fetch-depth: 2 # Fetch the last two commits to compare
 
-      - name: Set up JDK 21
-        uses: actions/setup-java@v3
-        with:
-          java-version: "21"
-          distribution: "temurin"
-          cache: "maven"
-
       - name: Check if version changed
         id: version_check
         run: |
           # Navigate to the api/ directory
           cd api
 
-          # Get current version
-          CURRENT_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
+          # Get current version using Maven wrapper
+          CURRENT_VERSION=$(./mvnw help:evaluate -Dexpression=project.version -q -DforceStdout)
 
-          # Get version from previous commit
+          # Get version from the previous commit
           git checkout HEAD^
-          PREVIOUS_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
+          PREVIOUS_VERSION=$(./mvnw help:evaluate -Dexpression=project.version -q -DforceStdout)
           git checkout -
 
           # Compare versions
