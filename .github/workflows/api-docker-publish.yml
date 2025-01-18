@@ -3,8 +3,6 @@ name: Publish Docker image
 on:
   push:
     branches: ["main"]
-    paths:
-      - "./api/pom.xml"
 
 jobs:
   check_version:
