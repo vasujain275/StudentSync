@@ -161,7 +161,7 @@ public class AuthenticationService {
 
     private AuthenticationResponse buildAuthenticationResponse(User user) {
         return AuthenticationResponse.builder()
-                .userRole(user.getRole().name())
+                .userRole(user.getUserRole().name())
                 .username(user.getUsername())
                 .build();
     }

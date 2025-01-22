@@ -4,43 +4,39 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
-import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "courses")
+@Table(name = "batches")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @SuperBuilder
-public class Course extends BaseEntity{
-
+public class Batch extends BaseEntity{
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "department_id", nullable = false)
     private Department department;
 
-    @Column(unique = true, nullable = false)
-    private String code;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "academic_year_id", nullable = false)
+    private AcademicYear academicYear;
 
     @Column(nullable = false)
-    private String title;
-
-    @Column(columnDefinition = "TEXT")
-    private String description;
+    private String name;
 
     @Column(nullable = false)
-    private Integer credits;
+    private Integer startSemester;
 
     @Column(nullable = false)
-    private Integer semesterNumber;
+    private Integer capacity;
 
-    @Column(nullable = false)
-    private Boolean isElective = false;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "coordinator_id")
+    private User coordinator;
 
     @Builder.Default
-    @OneToMany(mappedBy = "course")
+    @OneToMany(mappedBy = "batch")
     private Set<CourseOffering> courseOfferings = new HashSet<>();
-
 }
