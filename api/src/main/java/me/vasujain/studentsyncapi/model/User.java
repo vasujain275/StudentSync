@@ -1,25 +1,22 @@
 package me.vasujain.studentsyncapi.model;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
+import me.vasujain.studentsyncapi.enums.UserRole;
+import me.vasujain.studentsyncapi.enums.UserStatus;
 
-import java.time.LocalDateTime;
-import java.util.UUID;
+import java.util.HashSet;
+import java.util.Set;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
 @Entity
 @Table(name = "users")
-public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(nullable = false, updatable = false)
-    private UUID id;
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@SuperBuilder
+public class User extends BaseEntity{
 
     @Column(unique = true, nullable = false)
     private String username;
@@ -32,30 +29,35 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Role role;
+    private UserRole userRole;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "department_id")
+    private Department department;
 
     private String firstName;
     private String lastName;
+    private String admissionYear;
+    private Integer currentSemester;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private UserStatus status;
+
     private String avatar;
 
     @Column(length = 512)
     private String refreshToken;
 
-    @Column(nullable = false, updatable = false)
-    private LocalDateTime createdAt;
+    @Builder.Default
+    @OneToMany(mappedBy = "teacher")
+    private Set<CourseOffering> taughtCourses = new HashSet<>();
 
-    @Column(nullable = false)
-    private LocalDateTime updatedAt;
+    @Builder.Default
+    @OneToMany(mappedBy = "user")
+    private Set<Enrollment> enrollments = new HashSet<>();
 
-    @PrePersist
-    protected void onCreate() {
-        this.createdAt = LocalDateTime.now();
-        this.updatedAt = LocalDateTime.now();
-    }
-
-    @PreUpdate
-    protected void onUpdate() {
-        this.updatedAt = LocalDateTime.now();
-    }
-
+    @Builder.Default
+    @OneToMany(mappedBy = "coordinator")
+    private Set<Batch> coordinatedBatches = new HashSet<>();
 }

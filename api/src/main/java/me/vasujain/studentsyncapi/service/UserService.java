@@ -1,15 +1,12 @@
 package me.vasujain.studentsyncapi.service;
 
 import me.vasujain.studentsyncapi.dto.RegisterUserDTO;
-import me.vasujain.studentsyncapi.model.Role;
+import me.vasujain.studentsyncapi.enums.UserRole;
 import me.vasujain.studentsyncapi.model.User;
 import me.vasujain.studentsyncapi.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.io.IOException;
 
 @Service
 public class UserService {
@@ -26,7 +23,7 @@ public class UserService {
                 .username(dto.getUsername())
                 .password(passwordEncoder.encode(dto.getPassword()))
                 .email(dto.getEmail())
-                .role(Role.valueOf(dto.getRole()))
+                .userRole(UserRole.valueOf(dto.getRole()))
                 .firstName(dto.getFirstName())
                 .lastName(dto.getLastName())
                 .avatar(null)

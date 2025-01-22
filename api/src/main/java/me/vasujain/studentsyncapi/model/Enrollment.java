@@ -1,71 +1,53 @@
 package me.vasujain.studentsyncapi.model;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
+import me.vasujain.studentsyncapi.enums.EnrollmentStatus;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.UUID;
+import java.util.HashSet;
+import java.util.Set;
 
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
 @Entity
 @Table(name = "enrollments")
-public class Enrollment {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(nullable = false, updatable = false)
-    private UUID id;
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@SuperBuilder
+public class Enrollment extends BaseEntity{
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @ManyToOne
-    @JoinColumn(name = "course_id", nullable = false)
-    private Course course;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "course_offering_id", nullable = false)
+    private CourseOffering courseOffering;
 
     @Column(nullable = false)
     private LocalDate enrollmentDate;
 
-    @Column(length = 50)
-    private String status;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "semester_id", nullable = false)
+    private Semester semester;
 
-    @Column(nullable = false, columnDefinition = "int default 0")
-    private int totalClass;
+    private Integer totalClasses;
+    private Integer attendedClasses;
+    private Integer absentClasses;
+    private Integer loaClasses;
+    private Float attendancePercentage;
 
-    @Column(nullable = false, columnDefinition = "int default 0")
-    private int attendedClass;
+    @Enumerated(EnumType.STRING)
+    private EnrollmentStatus status;
 
-    @Column(nullable = false, columnDefinition = "int default 0")
-    private int absentClass;
+    @Builder.Default
+    @OneToMany(mappedBy = "enrollment")
+    private Set<Attendance> attendanceRecords = new HashSet<>();
 
-    @Column(nullable = false, columnDefinition = "int default 0")
-    private int loaClass;
+    @OneToOne(mappedBy = "enrollment")
+    private Grade grade;
 
-    @Column(nullable = false, columnDefinition = "float default 0")
-    private float attendance;
-
-    @Column(nullable = false, updatable = false)
-    private LocalDateTime createdAt;
-
-    @Column(nullable = false)
-    private LocalDateTime updatedAt;
-
-    @PrePersist
-    protected void onCreate() {
-        this.createdAt = LocalDateTime.now();
-        this.updatedAt = LocalDateTime.now();
-    }
-
-    @PreUpdate
-    protected void onUpdate() {
-        this.updatedAt = LocalDateTime.now();
-    }
 }
