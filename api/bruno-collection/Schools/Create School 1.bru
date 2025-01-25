@@ -1,0 +1,19 @@
+meta {
+  name: Create School 1
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{base}}/school
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name": "Computer Science Engineering",
+    "code": "CSE",
+    "description": "A program focusing on the study of computer systems, programming, and software development."
+  }
+}

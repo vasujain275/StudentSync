@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import me.vasujain.studentsyncapi.filter.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -35,15 +36,29 @@ public class SecurityConfig {
         http
                 // Disable CSRF as we're using stateless JWT authentication
                 .csrf(AbstractHttpConfigurer::disable)
-
                 // Configure authorization rules for different endpoints
                 .authorizeHttpRequests(auth -> auth
                         // Public endpoints that don't require authentication
                         .requestMatchers("/auth/**").permitAll()
                         .requestMatchers("/health").permitAll()
-                        .requestMatchers("/notice").permitAll()
 
-                        // Role-based access control for different paths
+                        // Notice endpoint authorization
+                        // GET requests are publicly accessible
+                        .requestMatchers(HttpMethod.GET, "/notice/**").permitAll()
+                        // POST, PUT, DELETE requests require SUPER_ADMIN role
+                        .requestMatchers(HttpMethod.POST, "/notice").hasRole("SUPER_ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/notice/**").hasRole("SUPER_ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/notice/**").hasRole("SUPER_ADMIN")
+
+                        // School endpoint authorization
+                        // GET requests require any authenticated user
+                        .requestMatchers(HttpMethod.GET, "/school/**").authenticated()
+                        // POST, PUT, DELETE requests require SUPER_ADMIN role
+                        .requestMatchers(HttpMethod.POST, "/school").hasRole("SUPER_ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/school/**").hasRole("SUPER_ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/school/**").hasRole("SUPER_ADMIN")
+
+                        // Role-based access control for other paths
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/superadmin/**").hasRole("SUPER_ADMIN")
                         .requestMatchers("/student/**").hasRole("STUDENT")
@@ -51,18 +66,14 @@ public class SecurityConfig {
                         // Any other request needs authentication
                         .anyRequest().authenticated()
                 )
-
                 // Configure session management to be stateless
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
-
                 // Add our authentication provider
                 .authenticationProvider(authenticationProvider())
-
                 // Add JWT filter before the standard authentication filter
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
-
         return http.build();
     }
 

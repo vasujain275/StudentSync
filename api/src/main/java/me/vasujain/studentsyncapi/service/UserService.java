@@ -2,6 +2,7 @@ package me.vasujain.studentsyncapi.service;
 
 import me.vasujain.studentsyncapi.dto.RegisterUserDTO;
 import me.vasujain.studentsyncapi.enums.UserRole;
+import me.vasujain.studentsyncapi.enums.UserStatus;
 import me.vasujain.studentsyncapi.model.User;
 import me.vasujain.studentsyncapi.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,7 @@ public class UserService {
                 .userRole(UserRole.valueOf(dto.getRole()))
                 .firstName(dto.getFirstName())
                 .lastName(dto.getLastName())
+                .status(UserStatus.valueOf(dto.getStatus()))
                 .avatar(null)
                 .build();
         return userRepository.save(user);

@@ -1,0 +1,19 @@
+meta {
+  name: Create School 2
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{base}}/school
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name": "Mechanical Engineering",
+    "code": "ME",
+    "description": "A branch of engineering that involves the design, analysis, manufacturing, and maintenance of mechanical systems."
+  }
+}
