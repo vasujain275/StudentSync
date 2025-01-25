@@ -35,9 +35,13 @@ public class User extends BaseEntity{
     @JoinColumn(name = "department_id")
     private Department department;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "batch_id")
+    private Batch batch;
+
     private String firstName;
     private String lastName;
-    private String admissionYear;
+    private Integer admissionYear;
     private Integer currentSemester;
 
     @Enumerated(EnumType.STRING)
@@ -50,12 +54,12 @@ public class User extends BaseEntity{
     private String refreshToken;
 
     @Builder.Default
-    @OneToMany(mappedBy = "teacher")
-    private Set<CourseOffering> taughtCourses = new HashSet<>();
-
-    @Builder.Default
     @OneToMany(mappedBy = "user")
     private Set<Enrollment> enrollments = new HashSet<>();
+
+    @Builder.Default
+    @OneToMany(mappedBy = "teacher")
+    private Set<Enrollment> teachingEnrollments = new HashSet<>();
 
     @Builder.Default
     @OneToMany(mappedBy = "coordinator")

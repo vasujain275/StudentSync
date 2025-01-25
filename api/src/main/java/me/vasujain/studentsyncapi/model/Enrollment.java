@@ -24,8 +24,8 @@ public class Enrollment extends BaseEntity{
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "course_offering_id", nullable = false)
-    private CourseOffering courseOffering;
+    @JoinColumn(name = "teacher_id", nullable = false)
+    private User teacher;
 
     @Column(nullable = false)
     private LocalDate enrollmentDate;
@@ -37,7 +37,6 @@ public class Enrollment extends BaseEntity{
     private Integer totalClasses;
     private Integer attendedClasses;
     private Integer absentClasses;
-    private Integer loaClasses;
     private Float attendancePercentage;
 
     @Enumerated(EnumType.STRING)

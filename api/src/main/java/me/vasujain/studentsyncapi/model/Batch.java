@@ -20,8 +20,8 @@ public class Batch extends BaseEntity{
     private Department department;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "academic_year_id", nullable = false)
-    private AcademicYear academicYear;
+    @JoinColumn(name = "semester_id", nullable = false)
+    private Semester semester;
 
     @Column(nullable = false)
     private String name;
@@ -38,5 +38,5 @@ public class Batch extends BaseEntity{
 
     @Builder.Default
     @OneToMany(mappedBy = "batch")
-    private Set<CourseOffering> courseOfferings = new HashSet<>();
+    private Set<User> users = new HashSet<>();
 }

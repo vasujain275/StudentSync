@@ -19,9 +19,8 @@ import java.util.Set;
 @SuperBuilder
 public class Semester extends BaseEntity{
 
-    @ManyToOne
-    @JoinColumn(name = "academic_year_id", nullable = false)
-    private AcademicYear academicYear;
+    @Column(nullable = false)
+    private Integer academicYear;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -45,8 +44,4 @@ public class Semester extends BaseEntity{
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private SemesterStatus status;
-
-    @Builder.Default
-    @OneToMany(mappedBy = "semester")
-    private Set<CourseOffering> courseOfferings = new HashSet<>();
 }

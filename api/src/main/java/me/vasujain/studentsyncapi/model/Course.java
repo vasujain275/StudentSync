@@ -33,14 +33,18 @@ public class Course extends BaseEntity{
     @Column(nullable = false)
     private Integer credits;
 
-    @Column(nullable = false)
+    @Column(name = "lecture_classes")
+    private Integer lectureClasses;
+
+    @Column(name = "tutorial_classes")
+    private Integer tutorialClasses;
+
+    @Column(name = "practical_classes")
+    private Integer practicalClasses;
+
+    @Column(name = "semester_number")
     private Integer semesterNumber;
 
     @Column(nullable = false)
     private Boolean isElective = false;
-
-    @Builder.Default
-    @OneToMany(mappedBy = "course")
-    private Set<CourseOffering> courseOfferings = new HashSet<>();
-
 }
