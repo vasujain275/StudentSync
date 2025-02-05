@@ -1,11 +1,11 @@
 meta {
-  name: Create School 2
+  name: Create Department 2
   type: http
   seq: 2
 }
 
 post {
-  url: {{base}}/school
+  url: {{base}}/department
   body: json
   auth: none
 }
@@ -14,6 +14,7 @@ body:json {
   {
     "name": "Mechanical Engineering",
     "code": "ME",
+    "school": "fe97c75d-c04c-46bf-b185-73f7f9ab0ee2",
     "description": "A branch of engineering that involves the design, analysis, manufacturing, and maintenance of mechanical systems."
   }
 }
