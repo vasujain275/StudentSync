@@ -5,7 +5,13 @@ meta {
 }
 
 get {
-  url: {{base}}/school
+  url: {{base}}/school?paginate=true&page=0&size=10
   body: none
   auth: none
+}
+
+params:query {
+  paginate: true
+  page: 0
+  size: 10
 }
