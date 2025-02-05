@@ -4,10 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
-import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
-
 @Entity
 @Table(name = "courses")
 @Getter
@@ -17,7 +13,7 @@ import java.util.Set;
 @SuperBuilder
 public class Course extends BaseEntity{
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "department_id", nullable = false)
     private Department department;
 

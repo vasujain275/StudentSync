@@ -31,11 +31,11 @@ public class User extends BaseEntity{
     @Column(nullable = false)
     private UserRole userRole;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "department_id")
     private Department department;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "batch_id")
     private Batch batch;
 
@@ -52,16 +52,4 @@ public class User extends BaseEntity{
 
     @Column(length = 512)
     private String refreshToken;
-
-    @Builder.Default
-    @OneToMany(mappedBy = "user")
-    private Set<Enrollment> enrollments = new HashSet<>();
-
-    @Builder.Default
-    @OneToMany(mappedBy = "teacher")
-    private Set<Enrollment> teachingEnrollments = new HashSet<>();
-
-    @Builder.Default
-    @OneToMany(mappedBy = "coordinator")
-    private Set<Batch> coordinatedBatches = new HashSet<>();
 }

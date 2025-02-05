@@ -13,8 +13,12 @@ import java.util.UUID;
 @Service
 public class NoticeService {
 
+    private final NoticeRepository noticeRepository;
+
     @Autowired
-    private NoticeRepository noticeRepository;
+    public NoticeService(NoticeRepository noticeRepository){
+        this.noticeRepository = noticeRepository;
+    }
 
     public List<Notice> getAllNotices(){
         return noticeRepository.findAll();

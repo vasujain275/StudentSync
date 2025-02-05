@@ -24,8 +24,4 @@ public class School extends BaseEntity{
 
     private String description;
 
-    @Builder.Default
-    @OneToMany(mappedBy = "school", cascade = CascadeType.ALL)
-    private Set<Department> departments = new HashSet<>();
-
 }
