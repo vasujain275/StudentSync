@@ -39,8 +39,15 @@ public class SecurityConfig {
                 // Configure authorization rules for different endpoints
                 .authorizeHttpRequests(auth -> auth
                         // Public endpoints that don't require authentication
-                        .requestMatchers("/auth/**").permitAll()
-                        .requestMatchers("/health").permitAll()
+                        .requestMatchers(
+                                "/auth/**",
+                                "/health",
+                                "/docs",
+                                "/swagger-ui/**",
+                                "/v3/api-docs/**",
+                                "/openapi.yaml" // Allow OpenAPI spec
+                        ).permitAll()
+
 
                         // Notice endpoint authorization
                         // GET requests are publicly accessible

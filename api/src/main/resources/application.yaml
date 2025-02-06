@@ -27,6 +27,18 @@ logging:
       max-history: 7
       max-file-size: 10MB
 
+springdoc:
+  swagger-ui:
+    path: /docs
+    urls:
+      - url: /openapi.yaml
+        name: Student Sync API
+  api-docs:
+    enabled: true
+  default-consumes-media-type: application/json
+  default-produces-media-type: application/json
+  override-with-generic-response: false
+
 server:
   error:
     include-message: always
