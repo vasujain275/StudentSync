@@ -12,117 +12,109 @@ paths:
   /school:
     get:
       summary: Get all schools
-      description: Retrieve a list of all schools, with optional pagination.
+      description: Fetch a list of schools with optional pagination
       parameters:
         - name: paginate
           in: query
-          description: Enable pagination
-          required: false
           schema:
             type: boolean
+          description: Enable pagination (default false)
         - name: page
           in: query
-          description: Page number (if pagination is enabled)
-          required: false
           schema:
             type: integer
             default: 0
+          description: Page number for pagination
         - name: size
           in: query
-          description: Number of items per page (if pagination is enabled)
-          required: false
           schema:
             type: integer
             default: 10
+          description: Number of items per page
       responses:
         "200":
-          description: Successfully retrieved schools
+          description: List of schools
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ApiResponseListSchool"
-
+                $ref: '#/components/schemas/ApiResponseListSchool'
     post:
       summary: Create a new school
-      description: Adds a new school to the system.
+      description: Adds a new school to the system
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/SchoolDTO"
+              $ref: '#/components/schemas/SchoolDTO'
       responses:
         "201":
           description: School created successfully
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ApiResponseSchool"
-
+                $ref: '#/components/schemas/ApiResponseSchool'
   /school/{id}:
     get:
       summary: Get a school by ID
-      description: Retrieve details of a specific school using its ID.
+      description: Fetch details of a specific school by its ID
       parameters:
         - name: id
           in: path
           required: true
-          description: Unique school ID (UUID)
           schema:
             type: string
             format: uuid
+          description: School ID
       responses:
         "200":
-          description: Successfully retrieved school details
+          description: School details
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ApiResponseSchool"
-
+                $ref: '#/components/schemas/ApiResponseSchool'
     put:
       summary: Update a school
-      description: Modify details of an existing school.
+      description: Modify an existing school's details
       parameters:
         - name: id
           in: path
           required: true
-          description: Unique school ID (UUID)
           schema:
             type: string
             format: uuid
+          description: School ID
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/SchoolDTO"
+              $ref: '#/components/schemas/SchoolDTO'
       responses:
         "200":
           description: School updated successfully
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ApiResponseSchool"
-
+                $ref: '#/components/schemas/ApiResponseSchool'
     delete:
       summary: Delete a school
-      description: Remove a school from the system.
+      description: Remove a school from the system
       parameters:
         - name: id
           in: path
           required: true
-          description: Unique school ID (UUID)
           schema:
             type: string
             format: uuid
+          description: School ID
       responses:
         "200":
           description: School deleted successfully
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ApiResponseVoid"
-
+                $ref: '#/components/schemas/ApiResponse'
 components:
   schemas:
     School:
@@ -133,50 +125,42 @@ components:
           format: uuid
         name:
           type: string
-        address:
+        code:
           type: string
-
+        description:
+          type: string
     SchoolDTO:
       type: object
       properties:
         name:
           type: string
-        address:
+        code:
           type: string
-
+        description:
+          type: string
     ApiResponse:
       type: object
       properties:
         status:
-          type: integer
-          example: 200
+          type: string
         message:
           type: string
-        data:
-          type: object
-
+        timestamp:
+          type: string
+          format: date
     ApiResponseSchool:
       allOf:
-        - $ref: "#/components/schemas/ApiResponse"
+        - $ref: '#/components/schemas/ApiResponse'
         - type: object
           properties:
             data:
-              $ref: "#/components/schemas/School"
-
+              $ref: '#/components/schemas/School'
     ApiResponseListSchool:
       allOf:
-        - $ref: "#/components/schemas/ApiResponse"
+        - $ref: '#/components/schemas/ApiResponse'
         - type: object
           properties:
             data:
               type: array
               items:
-                $ref: "#/components/schemas/School"
-
-    ApiResponseVoid:
-      allOf:
-        - $ref: "#/components/schemas/ApiResponse"
-        - type: object
-          properties:
-            data:
-              type: "null"
+                $ref: '#/components/schemas/School'
