@@ -1,0 +1,20 @@
+meta {
+  name: Create Department 1
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{base}}/department
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name": "Computer Science Engineering",
+    "code": "CSE",
+    "school":"fe97c75d-c04c-46bf-b185-73f7f9ab0ee2",
+    "description": "A program focusing on the study of computer systems, programming, and software development."
+  }
+}

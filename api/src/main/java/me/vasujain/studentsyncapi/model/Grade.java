@@ -23,7 +23,7 @@ public class Grade extends BaseEntity {
 
     private String grade;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "graded_by")
     private User gradedBy;
 

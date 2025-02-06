@@ -4,10 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
-import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
-
 @Entity
 @Table(name = "courses")
 @Getter
@@ -17,7 +13,7 @@ import java.util.Set;
 @SuperBuilder
 public class Course extends BaseEntity{
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "department_id", nullable = false)
     private Department department;
 
@@ -33,14 +29,18 @@ public class Course extends BaseEntity{
     @Column(nullable = false)
     private Integer credits;
 
-    @Column(nullable = false)
+    @Column(name = "lecture_classes")
+    private Integer lectureClasses;
+
+    @Column(name = "tutorial_classes")
+    private Integer tutorialClasses;
+
+    @Column(name = "practical_classes")
+    private Integer practicalClasses;
+
+    @Column(name = "semester_number")
     private Integer semesterNumber;
 
     @Column(nullable = false)
     private Boolean isElective = false;
-
-    @Builder.Default
-    @OneToMany(mappedBy = "course")
-    private Set<CourseOffering> courseOfferings = new HashSet<>();
-
 }

@@ -6,9 +6,6 @@ import lombok.experimental.SuperBuilder;
 import me.vasujain.studentsyncapi.enums.EnrollmentStatus;
 
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
-
 
 @Entity
 @Table(name = "enrollments")
@@ -19,33 +16,28 @@ import java.util.Set;
 @SuperBuilder
 public class Enrollment extends BaseEntity{
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "course_offering_id", nullable = false)
-    private CourseOffering courseOffering;
+    @ManyToOne
+    @JoinColumn(name = "teacher_id", nullable = false)
+    private User teacher;
 
     @Column(nullable = false)
     private LocalDate enrollmentDate;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "semester_id", nullable = false)
     private Semester semester;
 
     private Integer totalClasses;
     private Integer attendedClasses;
     private Integer absentClasses;
-    private Integer loaClasses;
     private Float attendancePercentage;
 
     @Enumerated(EnumType.STRING)
     private EnrollmentStatus status;
-
-    @Builder.Default
-    @OneToMany(mappedBy = "enrollment")
-    private Set<Attendance> attendanceRecords = new HashSet<>();
 
     @OneToOne(mappedBy = "enrollment")
     private Grade grade;

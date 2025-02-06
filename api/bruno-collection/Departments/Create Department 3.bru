@@ -1,0 +1,19 @@
+meta {
+  name: Create Department 3
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{base}}/department
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name": "Business Management",
+    "code": "BM",
+    "description": "A program dedicated to understanding the principles of business, management practices, and strategic planning."
+  }
+}

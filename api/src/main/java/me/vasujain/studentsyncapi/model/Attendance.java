@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @SuperBuilder
 public class Attendance extends BaseEntity{
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "enrollment_id", nullable = false)
     private Enrollment enrollment;
 
@@ -30,7 +30,7 @@ public class Attendance extends BaseEntity{
     @Column(nullable = false)
     private AttendanceStatus status;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "marked_by")
     private User markedBy;
 

@@ -1,0 +1,19 @@
+meta {
+  name: Create School 3
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{base}}/school
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name": "School of Commerce",
+    "code": "SC",
+    "description": "A program dedicated to understanding the principles of business, management practices, and strategic planning."
+  }
+}
