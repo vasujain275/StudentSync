@@ -60,9 +60,9 @@ public class SchoolService {
         School school = schoolRepository.findById(id)
                 .orElseThrow(()-> new ResourceNotFoundException("School not found with id - " + id));
 
-        school.setName(dto.getName());
-        school.setCode(dto.getCode());
-        school.setDescription(dto.getDescription());
+        if (dto.getName() != null) school.setName(dto.getName());
+        if (dto.getCode() != null) school.setCode(dto.getCode());
+        if(dto.getDescription() != null) school.setDescription(dto.getDescription());
 
         return schoolRepository.save(school);
     }
