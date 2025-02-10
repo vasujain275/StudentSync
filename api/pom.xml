@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>me.vasujain</groupId>
 	<artifactId>studentsyncapi</artifactId>
-	<version>0.2.0</version>
+	<version>0.5.0</version>
 	<name>studentsyncapi</name>
 	<description>Backend for StudentSync ERP</description>
 	<url/>

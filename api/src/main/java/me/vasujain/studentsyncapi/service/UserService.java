@@ -1,5 +1,6 @@
 package me.vasujain.studentsyncapi.service;
 
+import jakarta.transaction.Transactional;
 import me.vasujain.studentsyncapi.dto.UserDTO;
 import me.vasujain.studentsyncapi.enums.UserRole;
 import me.vasujain.studentsyncapi.enums.UserStatus;
@@ -51,6 +52,7 @@ public class UserService {
         return userRepository.findByUsername(username);
     }
 
+    @Transactional
     public User createUser(UserDTO dto)  {
         logger.info("Creating user with username - {}", dto.getUsername());
 
@@ -63,12 +65,17 @@ public class UserService {
                 .lastName(dto.getLastName())
                 .status(UserStatus.valueOf(dto.getStatus()))
                 .avatar(null)
-                .department(departmentService.getDepartment(dto.getDepartmentId()))
-                .batch(batchService.getBatch(dto.getBatchId()))
                 .build();
+
+        if(dto.getDepartmentId() != null ) user.setDepartment(departmentService.getDepartment(dto.getDepartmentId()));
+        if(dto.getBatchId() != null ) user.setBatch(batchService.getBatch(dto.getBatchId()));
+        if(dto.getAdmissionYear() != null ) user.setAdmissionYear(dto.getAdmissionYear());
+        if(dto.getCurrentSemester() != null ) user.setCurrentSemester(dto.getCurrentSemester());
+
         return userRepository.save(user);
     }
 
+    @Transactional
     public User updateUser(UUID id, UserDTO dto) {
         User user = getUser(id);
         if (dto.getUsername() != null)  user.setUsername(dto.getUsername());
@@ -82,6 +89,11 @@ public class UserService {
         if (dto.getBatchId() != null)  user.setBatch(batchService.getBatch(dto.getBatchId()));
 
         return userRepository.save(user);
+    }
+
+    @Transactional
+    public void deleteUser(UUID id) {
+        userRepository.deleteById(id);
     }
 
 }

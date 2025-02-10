@@ -2,11 +2,10 @@ package me.vasujain.studentsyncapi.controller;
 
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 import me.vasujain.studentsyncapi.dto.AuthenticationResponse;
 import me.vasujain.studentsyncapi.dto.LoginRequest;
 import me.vasujain.studentsyncapi.service.AuthenticationService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.slf4j.Logger;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,11 +15,16 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/auth")
-@RequiredArgsConstructor
 public class AuthenticationController {
 
-    @Autowired
     private final AuthenticationService authenticationService;
+    private final Logger logger;
+
+    public AuthenticationController(AuthenticationService authenticationService, Logger logger) {
+        this.authenticationService = authenticationService;
+        this.logger = logger;
+    }
+
 
     /**
      * Handles user login requests.
@@ -31,6 +35,7 @@ public class AuthenticationController {
             @Valid @RequestBody LoginRequest loginRequest,
             HttpServletResponse response
     ) {
+        logger.debug("Login request received for user={}", loginRequest.getUsername());
         AuthenticationResponse authResponse = authenticationService.login(loginRequest, response);
         return ResponseEntity.ok(authResponse);
     }
@@ -44,6 +49,7 @@ public class AuthenticationController {
             @CookieValue(name = "refreshToken", required = false) String refreshToken,
             HttpServletResponse response
     ) {
+        logger.debug("Refresh token request received");
         AuthenticationResponse authResponse = authenticationService.refreshToken(refreshToken, response);
         return ResponseEntity.ok(authResponse);
     }
@@ -57,6 +63,7 @@ public class AuthenticationController {
             @CookieValue(name = "accessToken", required = false) String accessToken,
             HttpServletResponse response
     ) {
+        logger.debug("Logout request received");
         if (accessToken != null) {
             authenticationService.logout(accessToken, response);
         }
