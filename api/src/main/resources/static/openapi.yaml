@@ -8,39 +8,64 @@ servers:
   - url: http://localhost:8080/api/v1
     description: Local development server
 
+tags:
+  - name: School
+    description: Endpoints related to School operations.
+  - name: Department
+    description: Endpoints related to Department operations.
+  - name: Semester
+    description: Endpoints related to Semester operations.
+  - name: User
+    description: Endpoints related to User operations.
+  - name: Authentication
+    description: Endpoints related to Authentication operations.
+  - name: Batch
+    description: Endpoints related to Batch operations.
+  - name: Course
+    description: Endpoints related to Course operations.
+  - name: Enrollment
+    description: Endpoints related to Enrollment operations.
+  - name: Grade
+    description: Endpoints related to Grade operations.
+  - name: Notice
+    description: Endpoints related to Notice operations.
+  - name: Health
+    description: Endpoints related to Health checks.
+
 paths:
   /school:
     get:
+      tags:
+        - School
       summary: Get all schools
-      description: Fetch a list of schools with optional pagination
+      description: Returns a list of schools; supports optional pagination.
       parameters:
         - name: paginate
           in: query
+          description: Enable pagination.
           schema:
             type: boolean
-          description: Enable pagination (default false)
         - name: page
           in: query
+          description: Page number.
           schema:
             type: integer
-            default: 0
-          description: Page number for pagination
         - name: size
           in: query
+          description: Page size.
           schema:
             type: integer
-            default: 10
-          description: Number of items per page
       responses:
         "200":
-          description: List of schools
+          description: List of schools retrieved successfully.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ApiResponseListSchool'
+                $ref: '#/components/schemas/ApiResponseSchoolList'
     post:
+      tags:
+        - School
       summary: Create a new school
-      description: Adds a new school to the system
       requestBody:
         required: true
         content:
@@ -49,41 +74,43 @@ paths:
               $ref: '#/components/schemas/SchoolDTO'
       responses:
         "201":
-          description: School created successfully
+          description: School created successfully.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponseSchool'
   /school/{id}:
     get:
+      tags:
+        - School
       summary: Get a school by ID
-      description: Fetch details of a specific school by its ID
       parameters:
         - name: id
           in: path
+          description: School ID.
           required: true
           schema:
             type: string
             format: uuid
-          description: School ID
       responses:
         "200":
-          description: School details
+          description: School details.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponseSchool'
     put:
+      tags:
+        - School
       summary: Update a school
-      description: Modify an existing school's details
       parameters:
         - name: id
           in: path
+          description: School ID.
           required: true
           schema:
             type: string
             format: uuid
-          description: School ID
       requestBody:
         required: true
         content:
@@ -92,33 +119,1049 @@ paths:
               $ref: '#/components/schemas/SchoolDTO'
       responses:
         "200":
-          description: School updated successfully
+          description: School updated successfully.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponseSchool'
     delete:
+      tags:
+        - School
       summary: Delete a school
-      description: Remove a school from the system
       parameters:
         - name: id
           in: path
+          description: School ID.
           required: true
           schema:
             type: string
             format: uuid
-          description: School ID
       responses:
         "200":
-          description: School deleted successfully
+          description: School deleted successfully.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponse'
+
+  /department:
+    get:
+      tags:
+        - Department
+      summary: Get all departments
+      description: Returns a list of departments; supports optional pagination.
+      parameters:
+        - name: paginate
+          in: query
+          description: Enable pagination.
+          schema:
+            type: boolean
+        - name: page
+          in: query
+          description: Page number.
+          schema:
+            type: integer
+        - name: size
+          in: query
+          description: Page size.
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: List of departments retrieved successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseDepartmentList'
+    post:
+      tags:
+        - Department
+      summary: Create a new department
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DepartmentDTO'
+      responses:
+        "201":
+          description: Department created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseDepartment'
+  /department/{id}:
+    get:
+      tags:
+        - Department
+      summary: Get a department by ID
+      parameters:
+        - name: id
+          in: path
+          description: Department ID.
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Department details.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseDepartment'
+    put:
+      tags:
+        - Department
+      summary: Update a department
+      parameters:
+        - name: id
+          in: path
+          description: Department ID.
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DepartmentDTO'
+      responses:
+        "200":
+          description: Department updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseDepartment'
+    delete:
+      tags:
+        - Department
+      summary: Delete a department
+      parameters:
+        - name: id
+          in: path
+          description: Department ID.
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Department deleted successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+
+  /semester:
+    get:
+      tags:
+        - Semester
+      summary: Get all semesters
+      description: Returns a list of semesters; supports optional pagination.
+      parameters:
+        - name: paginate
+          in: query
+          description: Enable pagination.
+          schema:
+            type: boolean
+        - name: page
+          in: query
+          description: Page number.
+          schema:
+            type: integer
+        - name: size
+          in: query
+          description: Page size.
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: List of semesters retrieved successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseSemesterList'
+    post:
+      tags:
+        - Semester
+      summary: Create a new semester
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SemesterDTO'
+      responses:
+        "201":
+          description: Semester created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseSemester'
+  /semester/{id}:
+    get:
+      tags:
+        - Semester
+      summary: Get a semester by ID
+      parameters:
+        - name: id
+          in: path
+          description: Semester ID.
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Semester details.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseSemester'
+    put:
+      tags:
+        - Semester
+      summary: Update a semester
+      parameters:
+        - name: id
+          in: path
+          description: Semester ID.
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SemesterDTO'
+      responses:
+        "200":
+          description: Semester updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseSemester'
+    delete:
+      tags:
+        - Semester
+      summary: Delete a semester
+      parameters:
+        - name: id
+          in: path
+          description: Semester ID.
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Semester deleted successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+
+  /user:
+    get:
+      tags:
+        - User
+      summary: Get all users
+      description: Returns a list of users; supports optional pagination.
+      parameters:
+        - name: paginate
+          in: query
+          description: Enable pagination.
+          schema:
+            type: boolean
+        - name: page
+          in: query
+          description: Page number.
+          schema:
+            type: integer
+        - name: size
+          in: query
+          description: Page size.
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: List of users retrieved successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseUserList'
+    post:
+      tags:
+        - User
+      summary: Create a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserDTO'
+      responses:
+        "201":
+          description: User created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseUser'
+  /user/{id}:
+    get:
+      tags:
+        - User
+      summary: Get a user by ID
+      parameters:
+        - name: id
+          in: path
+          description: User ID.
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: User details.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseUser'
+    put:
+      tags:
+        - User
+      summary: Update a user
+      parameters:
+        - name: id
+          in: path
+          description: User ID.
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserDTO'
+      responses:
+        "200":
+          description: User updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseUser'
+    delete:
+      tags:
+        - User
+      summary: Delete a user
+      parameters:
+        - name: id
+          in: path
+          description: User ID.
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: User deleted successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+  /user/u/{username}:
+    get:
+      tags:
+        - User
+      summary: Get a user by username
+      parameters:
+        - name: username
+          in: path
+          description: Username.
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: User details.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseUser'
+
+  /auth/login:
+    post:
+      tags:
+        - Authentication
+      summary: User login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        "200":
+          description: Login successful.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationResponse'
+  /auth/refresh:
+    post:
+      tags:
+        - Authentication
+      summary: Refresh token
+      parameters:
+        - name: refreshToken
+          in: cookie
+          description: Refresh token cookie.
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Token refreshed successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationResponse'
+  /auth/logout:
+    post:
+      tags:
+        - Authentication
+      summary: Logout user
+      parameters:
+        - name: accessToken
+          in: cookie
+          description: Access token cookie.
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Logout successful.
+
+  /batch:
+    get:
+      tags:
+        - Batch
+      summary: Get all batches
+      description: Returns a list of batches; supports optional pagination.
+      parameters:
+        - name: paginate
+          in: query
+          description: Enable pagination.
+          schema:
+            type: boolean
+        - name: page
+          in: query
+          description: Page number.
+          schema:
+            type: integer
+        - name: size
+          in: query
+          description: Page size.
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: List of batches retrieved successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseBatchList'
+    post:
+      tags:
+        - Batch
+      summary: Create a new batch
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BatchDTO'
+      responses:
+        "201":
+          description: Batch created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseBatch'
+  /batch/{id}:
+    get:
+      tags:
+        - Batch
+      summary: Get a batch by ID
+      parameters:
+        - name: id
+          in: path
+          description: Batch ID.
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Batch details.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseBatch'
+    put:
+      tags:
+        - Batch
+      summary: Update a batch
+      parameters:
+        - name: id
+          in: path
+          description: Batch ID.
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BatchDTO'
+      responses:
+        "200":
+          description: Batch updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseBatch'
+    delete:
+      tags:
+        - Batch
+      summary: Delete a batch
+      parameters:
+        - name: id
+          in: path
+          description: Batch ID.
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Batch deleted successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+
+  /course:
+    get:
+      tags:
+        - Course
+      summary: Get all courses
+      description: Returns a list of courses; supports optional pagination.
+      parameters:
+        - name: paginate
+          in: query
+          description: Enable pagination.
+          schema:
+            type: boolean
+        - name: page
+          in: query
+          description: Page number.
+          schema:
+            type: integer
+        - name: size
+          in: query
+          description: Page size.
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: List of courses retrieved successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseCourseList'
+    post:
+      tags:
+        - Course
+      summary: Create a new course
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CourseDTO'
+      responses:
+        "201":
+          description: Course created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseCourse'
+  /course/{courseId}:
+    get:
+      tags:
+        - Course
+      summary: Get a course by ID
+      parameters:
+        - name: courseId
+          in: path
+          description: Course ID.
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Course details.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseCourse'
+    put:
+      tags:
+        - Course
+      summary: Update a course
+      parameters:
+        - name: courseId
+          in: path
+          description: Course ID.
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CourseDTO'
+      responses:
+        "200":
+          description: Course updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseCourse'
+    delete:
+      tags:
+        - Course
+      summary: Delete a course
+      parameters:
+        - name: courseId
+          in: path
+          description: Course ID.
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Course deleted successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+
+  /enrollment:
+    get:
+      tags:
+        - Enrollment
+      summary: Get all enrollments
+      description: Returns a list of enrollments; supports optional pagination.
+      parameters:
+        - name: paginate
+          in: query
+          description: Enable pagination.
+          schema:
+            type: boolean
+        - name: page
+          in: query
+          description: Page number.
+          schema:
+            type: integer
+        - name: size
+          in: query
+          description: Page size.
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: List of enrollments retrieved successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseEnrollmentList'
+    post:
+      tags:
+        - Enrollment
+      summary: Create a new enrollment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EnrollmentDTO'
+      responses:
+        "201":
+          description: Enrollment created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseEnrollment'
+  /enrollment/{id}:
+    get:
+      tags:
+        - Enrollment
+      summary: Get an enrollment by ID
+      parameters:
+        - name: id
+          in: path
+          description: Enrollment ID.
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Enrollment details.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseEnrollment'
+    put:
+      tags:
+        - Enrollment
+      summary: Update an enrollment
+      parameters:
+        - name: id
+          in: path
+          description: Enrollment ID.
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EnrollmentDTO'
+      responses:
+        "200":
+          description: Enrollment updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseEnrollment'
+    delete:
+      tags:
+        - Enrollment
+      summary: Delete an enrollment
+      parameters:
+        - name: id
+          in: path
+          description: Enrollment ID.
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Enrollment deleted successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+
+  /grade:
+    get:
+      tags:
+        - Grade
+      summary: Get all grades
+      description: Returns a list of grades; supports optional pagination.
+      parameters:
+        - name: paginate
+          in: query
+          description: Enable pagination.
+          schema:
+            type: boolean
+        - name: page
+          in: query
+          description: Page number.
+          schema:
+            type: integer
+        - name: size
+          in: query
+          description: Page size.
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: List of grades retrieved successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseGradeList'
+    post:
+      tags:
+        - Grade
+      summary: Create a new grade
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GradeDTO'
+      responses:
+        "201":
+          description: Grade created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseGrade'
+  /grade/{id}:
+    get:
+      tags:
+        - Grade
+      summary: Get a grade by ID
+      parameters:
+        - name: id
+          in: path
+          description: Grade ID.
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Grade details.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseGrade'
+    put:
+      tags:
+        - Grade
+      summary: Update a grade
+      parameters:
+        - name: id
+          in: path
+          description: Grade ID.
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GradeDTO'
+      responses:
+        "200":
+          description: Grade updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseGrade'
+    delete:
+      tags:
+        - Grade
+      summary: Delete a grade
+      parameters:
+        - name: id
+          in: path
+          description: Grade ID.
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Grade deleted successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+
+  /health:
+    get:
+      tags:
+        - Health
+      summary: Public health check
+      description: Returns the current health status and version.
+      responses:
+        "200":
+          description: Health status retrieved successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthStatus'
+
+  /notice:
+    get:
+      tags:
+        - Notice
+      summary: Get all notices
+      description: Returns a list of notices; supports optional pagination.
+      parameters:
+        - name: paginate
+          in: query
+          description: Enable pagination.
+          schema:
+            type: boolean
+        - name: page
+          in: query
+          description: Page number.
+          schema:
+            type: integer
+        - name: size
+          in: query
+          description: Page size.
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: List of notices retrieved successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseNoticeList'
+    post:
+      tags:
+        - Notice
+      summary: Create a new notice
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NoticeDTO'
+      responses:
+        "201":
+          description: Notice created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseNotice'
+  /notice/{id}:
+    get:
+      tags:
+        - Notice
+      summary: Get a notice by ID
+      parameters:
+        - name: id
+          in: path
+          description: Notice ID.
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Notice details.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseNotice'
+    put:
+      tags:
+        - Notice
+      summary: Update a notice
+      parameters:
+        - name: id
+          in: path
+          description: Notice ID.
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NoticeDTO'
+      responses:
+        "200":
+          description: Notice updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseNotice'
+    delete:
+      tags:
+        - Notice
+      summary: Delete a notice
+      parameters:
+        - name: id
+          in: path
+          description: Notice ID.
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Notice deleted successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+
 components:
   schemas:
+    ApiResponse:
+      type: object
+      description: Standard API response wrapper.
+      properties:
+        status:
+          type: string
+          description: HTTP status of the response.
+          example: OK
+        message:
+          type: string
+          description: Additional message.
+        timestamp:
+          type: string
+          format: date
+          description: Response timestamp.
+        pagination:
+          $ref: '#/components/schemas/PaginationMetadata'
+        data:
+          description: Response data.
+          oneOf:
+            - type: object
+            - type: array
+    PaginationMetadata:
+      type: object
+      description: Pagination metadata.
+      properties:
+        totalElements:
+          type: integer
+          example: 100
+        totalPages:
+          type: integer
+          example: 10
+        currentPage:
+          type: integer
+          example: 0
+        pageSize:
+          type: integer
+          example: 10
+
     School:
       type: object
+      description: School entity.
       properties:
         id:
           type: string
@@ -129,8 +1172,15 @@ components:
           type: string
         description:
           type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
     SchoolDTO:
       type: object
+      description: Data transfer object for School.
       properties:
         name:
           type: string
@@ -138,16 +1188,6 @@ components:
           type: string
         description:
           type: string
-    ApiResponse:
-      type: object
-      properties:
-        status:
-          type: string
-        message:
-          type: string
-        timestamp:
-          type: string
-          format: date
     ApiResponseSchool:
       allOf:
         - $ref: '#/components/schemas/ApiResponse'
@@ -155,7 +1195,7 @@ components:
           properties:
             data:
               $ref: '#/components/schemas/School'
-    ApiResponseListSchool:
+    ApiResponseSchoolList:
       allOf:
         - $ref: '#/components/schemas/ApiResponse'
         - type: object
@@ -164,3 +1204,503 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/School'
+
+    Department:
+      type: object
+      description: Department entity.
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        code:
+          type: string
+        description:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    DepartmentDTO:
+      type: object
+      description: Data transfer object for Department.
+      properties:
+        name:
+          type: string
+        code:
+          type: string
+        description:
+          type: string
+        schoolId:
+          type: string
+          format: uuid
+    ApiResponseDepartment:
+      allOf:
+        - $ref: '#/components/schemas/ApiResponse'
+        - type: object
+          properties:
+            data:
+              $ref: '#/components/schemas/Department'
+    ApiResponseDepartmentList:
+      allOf:
+        - $ref: '#/components/schemas/ApiResponse'
+        - type: object
+          properties:
+            data:
+              type: array
+              items:
+                $ref: '#/components/schemas/Department'
+
+    Semester:
+      type: object
+      description: Semester entity.
+      properties:
+        id:
+          type: string
+          format: uuid
+        # Other entity fields may be here as per your persistence model.
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    SemesterDTO:
+      type: object
+      description: Data transfer object for Semester.
+      properties:
+        academicYear:
+          type: integer
+        type:
+          type: string
+        number:
+          type: integer
+        startDate:
+          type: string
+          format: date
+        endDate:
+          type: string
+          format: date
+        registrationStart:
+          type: string
+          format: date
+        registrationEnd:
+          type: string
+          format: date
+        status:
+          type: string
+    ApiResponseSemester:
+      allOf:
+        - $ref: '#/components/schemas/ApiResponse'
+        - type: object
+          properties:
+            data:
+              $ref: '#/components/schemas/Semester'
+    ApiResponseSemesterList:
+      allOf:
+        - $ref: '#/components/schemas/ApiResponse'
+        - type: object
+          properties:
+            data:
+              type: array
+              items:
+                $ref: '#/components/schemas/Semester'
+
+    User:
+      type: object
+      description: User entity.
+      properties:
+        id:
+          type: string
+          format: uuid
+        username:
+          type: string
+        email:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    UserDTO:
+      type: object
+      description: Data transfer object for User.
+      properties:
+        username:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+        role:
+          type: string
+        departmentId:
+          type: string
+          format: uuid
+        batchId:
+          type: string
+          format: uuid
+        firstName:
+          type: string
+        lastName:
+          type: string
+        admissionYear:
+          type: integer
+        currentSemester:
+          type: integer
+        status:
+          type: string
+    ApiResponseUser:
+      allOf:
+        - $ref: '#/components/schemas/ApiResponse'
+        - type: object
+          properties:
+            data:
+              $ref: '#/components/schemas/User'
+    ApiResponseUserList:
+      allOf:
+        - $ref: '#/components/schemas/ApiResponse'
+        - type: object
+          properties:
+            data:
+              type: array
+              items:
+                $ref: '#/components/schemas/User'
+
+    Batch:
+      type: object
+      description: Batch entity.
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        scheduleInfo:
+          type: string
+        capacity:
+          type: integer
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    BatchDTO:
+      type: object
+      description: Data transfer object for Batch.
+      properties:
+        departmentId:
+          type: string
+          format: uuid
+        semesterId:
+          type: string
+          format: uuid
+        name:
+          type: string
+        scheduleInfo:
+          type: string
+        capacity:
+          type: integer
+        coordinatorId:
+          type: string
+          format: uuid
+    ApiResponseBatch:
+      allOf:
+        - $ref: '#/components/schemas/ApiResponse'
+        - type: object
+          properties:
+            data:
+              $ref: '#/components/schemas/Batch'
+    ApiResponseBatchList:
+      allOf:
+        - $ref: '#/components/schemas/ApiResponse'
+        - type: object
+          properties:
+            data:
+              type: array
+              items:
+                $ref: '#/components/schemas/Batch'
+
+    Course:
+      type: object
+      description: Course entity.
+      properties:
+        id:
+          type: string
+          format: uuid
+        code:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        credits:
+          type: integer
+        lectureClasses:
+          type: integer
+        tutorialClasses:
+          type: integer
+        practicalClasses:
+          type: integer
+        semesterNumber:
+          type: integer
+        isElective:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    CourseDTO:
+      type: object
+      description: Data transfer object for Course.
+      properties:
+        departmentId:
+          type: string
+          format: uuid
+        code:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        credits:
+          type: integer
+        lectureClasses:
+          type: integer
+        tutorialClasses:
+          type: integer
+        practicalClasses:
+          type: integer
+        semesterNumber:
+          type: integer
+        isElective:
+          type: boolean
+    ApiResponseCourse:
+      allOf:
+        - $ref: '#/components/schemas/ApiResponse'
+        - type: object
+          properties:
+            data:
+              $ref: '#/components/schemas/Course'
+    ApiResponseCourseList:
+      allOf:
+        - $ref: '#/components/schemas/ApiResponse'
+        - type: object
+          properties:
+            data:
+              type: array
+              items:
+                $ref: '#/components/schemas/Course'
+
+    Enrollment:
+      type: object
+      description: Enrollment entity.
+      properties:
+        id:
+          type: string
+          format: uuid
+        studentId:
+          type: string
+          format: uuid
+        teacherId:
+          type: string
+          format: uuid
+        courseId:
+          type: string
+          format: uuid
+        enrollmentDate:
+          type: string
+          format: date
+        semesterId:
+          type: string
+          format: uuid
+        totalClasses:
+          type: integer
+        status:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    EnrollmentDTO:
+      type: object
+      description: Data transfer object for Enrollment.
+      properties:
+        studentId:
+          type: string
+          format: uuid
+        teacherId:
+          type: string
+          format: uuid
+        courseId:
+          type: string
+          format: uuid
+        enrollmentDate:
+          type: string
+          format: date
+        semesterId:
+          type: string
+          format: uuid
+        totalClasses:
+          type: integer
+        status:
+          type: string
+    ApiResponseEnrollment:
+      allOf:
+        - $ref: '#/components/schemas/ApiResponse'
+        - type: object
+          properties:
+            data:
+              $ref: '#/components/schemas/Enrollment'
+    ApiResponseEnrollmentList:
+      allOf:
+        - $ref: '#/components/schemas/ApiResponse'
+        - type: object
+          properties:
+            data:
+              type: array
+              items:
+                $ref: '#/components/schemas/Enrollment'
+
+    Grade:
+      type: object
+      description: Grade entity.
+      properties:
+        id:
+          type: string
+          format: uuid
+        grade:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    GradeDTO:
+      type: object
+      description: Data transfer object for Grade.
+      properties:
+        enrollmentId:
+          type: string
+          format: uuid
+        grade:
+          type: string
+        gradedById:
+          type: string
+          format: uuid
+    ApiResponseGrade:
+      allOf:
+        - $ref: '#/components/schemas/ApiResponse'
+        - type: object
+          properties:
+            data:
+              $ref: '#/components/schemas/Grade'
+    ApiResponseGradeList:
+      allOf:
+        - $ref: '#/components/schemas/ApiResponse'
+        - type: object
+          properties:
+            data:
+              type: array
+              items:
+                $ref: '#/components/schemas/Grade'
+
+    Notice:
+      type: object
+      description: Notice entity.
+      properties:
+        id:
+          type: string
+          format: uuid
+        title:
+          type: string
+        content:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    NoticeDTO:
+      type: object
+      description: Data transfer object for Notice.
+      properties:
+        title:
+          type: string
+        Notice:
+          type: string
+        date:
+          type: string
+          format: date
+    ApiResponseNotice:
+      allOf:
+        - $ref: '#/components/schemas/ApiResponse'
+        - type: object
+          properties:
+            data:
+              $ref: '#/components/schemas/Notice'
+    ApiResponseNoticeList:
+      allOf:
+        - $ref: '#/components/schemas/ApiResponse'
+        - type: object
+          properties:
+            data:
+              type: array
+              items:
+                $ref: '#/components/schemas/Notice'
+
+    HealthStatus:
+      type: object
+      description: Health check response.
+      properties:
+        status:
+          type: string
+          example: UP
+        version:
+          type: string
+          example: v1
+
+    LoginRequest:
+      type: object
+      description: Login request payload.
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+
+    AuthenticationResponse:
+      type: object
+      description: Response returned upon successful authentication.
+      properties:
+        userRole:
+          type: string
+        username:
+          type: string
+
+    AttendanceDTO:
+      type: object
+      description: Data transfer object for Attendance.
+      properties:
+        enrollmentId:
+          type: string
+          format: uuid
+        date:
+          type: string
+          format: date
+        status:
+          type: string
+        markedById:
+          type: string
+          format: uuid

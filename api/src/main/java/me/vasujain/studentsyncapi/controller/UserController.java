@@ -112,4 +112,17 @@ public class UserController {
                 .build()
         );
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ApiResponse<Void>> deleteUser(@PathVariable UUID id){
+        logger.info("Deleting user with id={}", id);
+
+        userService.deleteUser(id);
+
+        return ResponseEntity.ok(ApiResponse.<Void>builder()
+                .status(HttpStatus.OK)
+                .message("User deleted successfully")
+                .build()
+        );
+    }
 }
