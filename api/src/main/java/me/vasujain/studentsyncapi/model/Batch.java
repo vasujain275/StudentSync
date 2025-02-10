@@ -23,6 +23,9 @@ public class Batch extends BaseEntity{
     @Column(nullable = false)
     private String name;
 
+    @Column
+    private String scheduleInfo;
+
     @Column(nullable = false)
     private Integer startSemester;
 

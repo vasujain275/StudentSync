@@ -17,12 +17,16 @@ import java.time.LocalDate;
 public class Enrollment extends BaseEntity{
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    @JoinColumn(name = "student_id", nullable = false)
+    private User student;
 
     @ManyToOne
     @JoinColumn(name = "teacher_id", nullable = false)
     private User teacher;
+
+    @ManyToOne
+    @JoinColumn(name = "course_id", nullable = false)
+    private Course course;
 
     @Column(nullable = false)
     private LocalDate enrollmentDate;
