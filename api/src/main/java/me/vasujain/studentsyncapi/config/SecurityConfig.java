@@ -19,6 +19,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import java.util.Arrays;
+
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -33,53 +35,74 @@ public class SecurityConfig {
      */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        // Define arrays of endpoints that follow the same pattern
+        String[] superAdminEndpoints = {
+                "/school",
+                "/department",
+                "/semester",
+                "/course",
+                "/enrollment"
+        };
+
+        String[] sharedAdminEndpoints = {
+                "/grade",
+                "/attendance"
+        };
+
         http
-                // Disable CSRF as we're using stateless JWT authentication
                 .csrf(AbstractHttpConfigurer::disable)
-                // Configure authorization rules for different endpoints
                 .authorizeHttpRequests(auth -> auth
-                        // Public endpoints that don't require authentication
+                        // Public endpoints
                         .requestMatchers(
+                                "/user/**",
                                 "/auth/**",
                                 "/health",
                                 "/docs",
                                 "/swagger-ui/**",
                                 "/v3/api-docs/**",
-                                "/openapi.yaml" // Allow OpenAPI spec
+                                "/openapi.yaml"
                         ).permitAll()
 
-
-                        // Notice endpoint authorization
-                        // GET requests are publicly accessible
+                        // Notice endpoints
                         .requestMatchers(HttpMethod.GET, "/notice/**").permitAll()
-                        // POST, PUT, DELETE requests require SUPER_ADMIN role
                         .requestMatchers(HttpMethod.POST, "/notice").hasRole("SUPER_ADMIN")
                         .requestMatchers(HttpMethod.PUT, "/notice/**").hasRole("SUPER_ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/notice/**").hasRole("SUPER_ADMIN")
 
-                        // School endpoint authorization
-                        // GET requests require any authenticated user
-                        .requestMatchers(HttpMethod.GET, "/school/**").authenticated()
-                        // POST, PUT, DELETE requests require SUPER_ADMIN role
-                        .requestMatchers(HttpMethod.POST, "/school").hasRole("SUPER_ADMIN")
-                        .requestMatchers(HttpMethod.PUT, "/school/**").hasRole("SUPER_ADMIN")
-                        .requestMatchers(HttpMethod.DELETE, "/school/**").hasRole("SUPER_ADMIN")
+                        // Super Admin controlled endpoints
+                        .requestMatchers(HttpMethod.GET, Arrays.stream(superAdminEndpoints)
+                                .map(path -> path + "/**")
+                                .toArray(String[]::new)).authenticated()
+                        .requestMatchers(HttpMethod.POST, superAdminEndpoints).hasRole("SUPER_ADMIN")
+                        .requestMatchers(HttpMethod.PUT, Arrays.stream(superAdminEndpoints)
+                                .map(path -> path + "/**")
+                                .toArray(String[]::new)).hasRole("SUPER_ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, Arrays.stream(superAdminEndpoints)
+                                .map(path -> path + "/**")
+                                .toArray(String[]::new)).hasRole("SUPER_ADMIN")
 
-                        // Role-based access control for other paths
+                        // Shared Admin endpoints (ADMIN and SUPER_ADMIN)
+                        .requestMatchers(HttpMethod.GET, Arrays.stream(sharedAdminEndpoints)
+                                .map(path -> path + "/**")
+                                .toArray(String[]::new)).authenticated()
+                        .requestMatchers(HttpMethod.POST, sharedAdminEndpoints).hasAnyRole("ADMIN", "SUPER_ADMIN")
+                        .requestMatchers(HttpMethod.PUT, Arrays.stream(sharedAdminEndpoints)
+                                .map(path -> path + "/**")
+                                .toArray(String[]::new)).hasAnyRole("ADMIN", "SUPER_ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, Arrays.stream(sharedAdminEndpoints)
+                                .map(path -> path + "/**")
+                                .toArray(String[]::new)).hasAnyRole("ADMIN", "SUPER_ADMIN")
+
+                        // Role-based paths
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/superadmin/**").hasRole("SUPER_ADMIN")
                         .requestMatchers("/student/**").hasRole("STUDENT")
-
-                        // Any other request needs authentication
                         .anyRequest().authenticated()
                 )
-                // Configure session management to be stateless
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
-                // Add our authentication provider
                 .authenticationProvider(authenticationProvider())
-                // Add JWT filter before the standard authentication filter
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }

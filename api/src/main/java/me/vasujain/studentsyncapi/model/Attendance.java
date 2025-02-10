@@ -9,7 +9,6 @@ import lombok.experimental.SuperBuilder;
 import me.vasujain.studentsyncapi.enums.AttendanceStatus;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "attendance")
@@ -33,6 +32,4 @@ public class Attendance extends BaseEntity{
     @ManyToOne
     @JoinColumn(name = "marked_by")
     private User markedBy;
-
-    private LocalDateTime markedAt;
 }

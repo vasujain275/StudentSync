@@ -5,7 +5,7 @@ meta {
 }
 
 post {
-  url: {{base}}/auth/register
+  url: {{base}}/user
   body: json
   auth: none
 }
@@ -16,9 +16,13 @@ body:json {
     "email": "moniya@example.com",
     "password": "root",
     "role": "STUDENT",
+    "departmentId": null,
+    "batchId": null,
     "status": "ACTIVE",
     "firstName": "Moniya",
-    "lastName": "Dhinghra"
+    "lastName": "Dhinghra",
+    "admissionYear": 2023,
+    "currentSemester": 4
   }
 }
 
@@ -27,7 +31,7 @@ body:form-urlencoded {
 }
 
 body:multipart-form {
-  registerUserDTO: 
+  userDTO: 
   avatar: @file(/home/vasu/Pictures/icon.jpeg)
   : 
 }

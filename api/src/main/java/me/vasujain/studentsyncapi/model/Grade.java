@@ -26,6 +26,4 @@ public class Grade extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "graded_by")
     private User gradedBy;
-
-    private LocalDateTime gradedAt;
 }
