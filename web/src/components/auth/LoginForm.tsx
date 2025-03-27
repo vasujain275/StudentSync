@@ -19,30 +19,26 @@ export const LoginForm = () => {
           password,
         }),
       });
-
       console.log(response);
       if (!response.ok) {
         throw new Error(`Error: ${response.statusText}`);
       }
     } catch (err) {
-      console.log(`Error Occured - ${err}`);
+      console.log(`Error Occurred - ${err}`);
     }
   };
 
   return (
-    <Card className="w-full max-w-sm mx-auto p-6 bg-card">
+    <Card className="w-full max-w-sm mx-auto p-6">
       <CardHeader>
-        <CardTitle className="text-lg font-semibold text-center text-primary">
+        <CardTitle className="text-lg font-semibold text-center">
           Login
         </CardTitle>
       </CardHeader>
       <CardContent>
         <form className="space-y-4" onSubmit={(e) => handleLogin(e)}>
           <div>
-            <Label
-              htmlFor="username"
-              className="text-sm font-medium text-muted-foreground"
-            >
+            <Label htmlFor="username" className="text-sm font-medium">
               Username
             </Label>
             <Input
@@ -57,10 +53,7 @@ export const LoginForm = () => {
             />
           </div>
           <div>
-            <Label
-              htmlFor="password"
-              className="text-sm font-medium text-muted-foreground"
-            >
+            <Label htmlFor="password" className="text-sm font-medium">
               Password
             </Label>
             <Input
@@ -74,9 +67,7 @@ export const LoginForm = () => {
               }}
             />
           </div>
-          <Button className="w-full bg-primary hover:bg-primary-dark text-base text-primary-foreground">
-            Login
-          </Button>
+          <Button className="w-full">Login</Button>
         </form>
       </CardContent>
     </Card>

@@ -37,13 +37,12 @@ export const NoticeCard = () => {
         setLoading(false);
       }
     };
-
     fetchNotices();
   }, []);
 
   return (
-    <div className="max-w-md w-full p-6 bg-card shadow-md rounded-md">
-      <h2 className="text-xl font-semibold mb-4 flex items-center gap-2 text-primary">
+    <div className="max-w-md w-full p-6 rounded-md border">
+      <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
         <Bell className="h-6 w-6" />
         Latest Notices
       </h2>
@@ -55,7 +54,7 @@ export const NoticeCard = () => {
           notices.map((notice) => (
             <div
               key={notice.id}
-              className="p-4 border border-border rounded-md cursor-pointer hover:bg-muted transition"
+              className="p-4 border rounded-md cursor-pointer hover:bg-accent transition"
               onClick={() => setSelectedNotice(notice)}
             >
               <h3 className="text-base font-semibold">{notice.title}</h3>
@@ -63,7 +62,6 @@ export const NoticeCard = () => {
             </div>
           ))}
       </div>
-
       {/* Dialog for displaying notice details */}
       <Dialog
         open={!!selectedNotice}
@@ -71,18 +69,11 @@ export const NoticeCard = () => {
       >
         <DialogContent>
           <DialogHeader>
-            <DialogTitle className="text-lg font-bold text-primary-foreground">
-              {selectedNotice?.title}
-            </DialogTitle>
-            <DialogDescription className="text-sm text-muted-foreground">
-              {selectedNotice?.date}
-            </DialogDescription>
+            <DialogTitle>{selectedNotice?.title}</DialogTitle>
+            <DialogDescription>{selectedNotice?.date}</DialogDescription>
           </DialogHeader>
-          <p className="text-sm text-gray-800 mt-2">{selectedNotice?.notice}</p>
-          <Button
-            className="mt-4 bg-primary hover:bg-primary-dark"
-            onClick={() => setSelectedNotice(null)}
-          >
+          <p className="text-sm mt-2">{selectedNotice?.notice}</p>
+          <Button className="mt-4" onClick={() => setSelectedNotice(null)}>
             Close
           </Button>
         </DialogContent>
