@@ -29,7 +29,7 @@ export const LoginForm = () => {
   };
 
   return (
-    <Card className="w-full max-w-sm mx-auto p-6">
+    <Card className="w-full max-w-sm mx-auto">
       <CardHeader>
         <CardTitle className="text-lg font-semibold text-center">
           Login
@@ -38,9 +38,7 @@ export const LoginForm = () => {
       <CardContent>
         <form className="space-y-4" onSubmit={(e) => handleLogin(e)}>
           <div>
-            <Label htmlFor="username" className="text-sm font-medium">
-              Username
-            </Label>
+            <Label htmlFor="username">Username</Label>
             <Input
               id="username"
               type="text"
@@ -53,9 +51,7 @@ export const LoginForm = () => {
             />
           </div>
           <div>
-            <Label htmlFor="password" className="text-sm font-medium">
-              Password
-            </Label>
+            <Label htmlFor="password">Password</Label>
             <Input
               id="password"
               type="password"
@@ -67,7 +63,9 @@ export const LoginForm = () => {
               }}
             />
           </div>
-          <Button className="w-full">Login</Button>
+          <Button type="submit" className="w-full">
+            Login
+          </Button>
         </form>
       </CardContent>
     </Card>

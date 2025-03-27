@@ -10,7 +10,7 @@ import {
 import { Button } from "@/components/ui/button";
 
 interface Notice {
-  id: string; // UUID from the API
+  id: string;
   title: string;
   date: string;
   notice: string;
@@ -41,28 +41,34 @@ export const NoticeCard = () => {
   }, []);
 
   return (
-    <div className="max-w-md w-full p-6 rounded-md border">
-      <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
-        <Bell className="h-6 w-6" />
-        Latest Notices
-      </h2>
-      <div className="space-y-4">
-        {loading && <p>Loading notices...</p>}
-        {error && <p className="text-destructive">{error}</p>}
-        {!loading &&
-          !error &&
-          notices.map((notice) => (
-            <div
-              key={notice.id}
-              className="p-4 border rounded-md cursor-pointer hover:bg-accent transition"
-              onClick={() => setSelectedNotice(notice)}
-            >
-              <h3 className="text-base font-semibold">{notice.title}</h3>
-              <p className="text-sm text-muted-foreground">{notice.date}</p>
-            </div>
-          ))}
+    <div className="w-full max-w-md border rounded-lg bg-card">
+      <div className="p-6">
+        <h2 className="text-xl font-semibold mb-4 flex items-center gap-2 text-card-foreground">
+          <Bell className="h-6 w-6 text-primary" />
+          Latest Notices
+        </h2>
+        <div className="space-y-4">
+          {loading && (
+            <p className="text-muted-foreground">Loading notices...</p>
+          )}
+          {error && <p className="text-destructive">{error}</p>}
+          {!loading &&
+            !error &&
+            notices.map((notice) => (
+              <div
+                key={notice.id}
+                className="p-4 border rounded-md cursor-pointer hover:bg-accent transition"
+                onClick={() => setSelectedNotice(notice)}
+              >
+                <h3 className="text-base font-semibold text-card-foreground">
+                  {notice.title}
+                </h3>
+                <p className="text-sm text-muted-foreground">{notice.date}</p>
+              </div>
+            ))}
+        </div>
       </div>
-      {/* Dialog for displaying notice details */}
+
       <Dialog
         open={!!selectedNotice}
         onOpenChange={() => setSelectedNotice(null)}
@@ -72,8 +78,8 @@ export const NoticeCard = () => {
             <DialogTitle>{selectedNotice?.title}</DialogTitle>
             <DialogDescription>{selectedNotice?.date}</DialogDescription>
           </DialogHeader>
-          <p className="text-sm mt-2">{selectedNotice?.notice}</p>
-          <Button className="mt-4" onClick={() => setSelectedNotice(null)}>
+          <p className="text-sm">{selectedNotice?.notice}</p>
+          <Button onClick={() => setSelectedNotice(null)} className="mt-4">
             Close
           </Button>
         </DialogContent>
