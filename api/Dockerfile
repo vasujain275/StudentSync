@@ -1,4 +1,4 @@
-FROM eclipse-temurin:21-jdk as builder
+FROM eclipse-temurin:23-jdk as builder
 
 WORKDIR /app
 
@@ -6,7 +6,7 @@ COPY . .
 
 RUN ./mvnw clean package -DskipTests
 
-FROM eclipse-temurin:21-jre
+FROM eclipse-temurin:23-jre
 
 WORKDIR /app
 
