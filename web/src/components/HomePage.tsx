@@ -11,10 +11,10 @@ const HomePage = () => {
         <main className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div className="flex justify-center">
-              <NoticeCard />
+              <LoginForm />
             </div>
             <div className="flex justify-center">
-              <LoginForm />
+              <NoticeCard />
             </div>
           </div>
         </main>

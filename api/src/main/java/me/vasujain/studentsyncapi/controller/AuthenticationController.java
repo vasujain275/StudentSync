@@ -4,9 +4,14 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import me.vasujain.studentsyncapi.dto.AuthenticationResponse;
 import me.vasujain.studentsyncapi.dto.LoginRequest;
+import me.vasujain.studentsyncapi.dto.UserResponse;
+import me.vasujain.studentsyncapi.model.User;
+import me.vasujain.studentsyncapi.model.UserPrincipal;
 import me.vasujain.studentsyncapi.service.AuthenticationService;
 import org.slf4j.Logger;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -53,6 +58,30 @@ public class AuthenticationController {
         AuthenticationResponse authResponse = authenticationService.refreshToken(refreshToken, response);
         return ResponseEntity.ok(authResponse);
     }
+
+    /**
+     * Returns information about the currently authenticated user.
+     * This endpoint relies on Spring Security to resolve the authenticated principal.
+     */
+    @GetMapping("/me")
+    public ResponseEntity<UserResponse> getCurrentUser(@AuthenticationPrincipal UserPrincipal principal) {
+        if (principal == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        User user = principal.getUser();
+        UserResponse userResponse = new UserResponse(
+                user.getUsername(),
+                user.getEmail(),
+                user.getUserRole().name(),
+                user.getFirstName(),
+                user.getLastName(),
+                user.getAvatar()
+                // Populate additional fields as necessary.
+        );
+        return ResponseEntity.ok(userResponse);
+    }
+
 
     /**
      * Handles user logout requests.
