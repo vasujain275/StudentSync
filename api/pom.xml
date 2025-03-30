@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>me.vasujain</groupId>
 	<artifactId>studentsyncapi</artifactId>
-	<version>0.5.0</version>
+	<version>0.6.0</version>
 	<name>studentsyncapi</name>
 	<description>Backend for StudentSync ERP</description>
 	<url/>
@@ -27,7 +27,7 @@
 		<url/>
 	</scm>
 	<properties>
-		<java.version>21</java.version>
+		<java.version>23</java.version>
 	</properties>
 	<dependencies>
 		<dependency>
