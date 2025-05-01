@@ -1,5 +1,6 @@
 package me.vasujain.studentsyncapi.service;
 
+import me.vasujain.studentsyncapi.annotation.TrackPerformance;
 import me.vasujain.studentsyncapi.dto.NoticeDTO;
 import me.vasujain.studentsyncapi.exception.ResourceNotFoundException;
 import me.vasujain.studentsyncapi.model.Notice;
@@ -33,6 +34,10 @@ public class NoticeService {
         }
     }
 
+
+    @TrackPerformance(value = "notice.findAll",
+            description = "Get all notices performance",
+            tags = {"entity:notice", "operation:findAll"})
     public Notice getNotice(UUID id){
         return noticeRepository.findById(id)
                 .orElseThrow(()-> new ResourceNotFoundException("Notice not found with id -" + id));
