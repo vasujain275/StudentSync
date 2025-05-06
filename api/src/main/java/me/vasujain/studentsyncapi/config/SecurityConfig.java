@@ -60,7 +60,8 @@ public class SecurityConfig {
                                 "/docs",
                                 "/swagger-ui/**",
                                 "/v3/api-docs/**",
-                                "/openapi.yaml"
+                                "/openapi.yaml",
+                                "/actuator/**"
                         ).permitAll()
 
                         // Notice endpoints
