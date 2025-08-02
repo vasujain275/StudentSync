@@ -1,7 +1,7 @@
 # Main application configuration
 spring:
   profiles:
-    active: dev  # Default to development profile
+    active: dev
   application:
     name: studentsyncapi
   jpa:
@@ -22,20 +22,19 @@ management:
     health:
       show-details: when_authorized
     metrics:
-      enabled: true
+      access: read_only
     prometheus:
-      enabled: true
+      access: read_only
   metrics:
-    export:
-      prometheus:
-        enabled: true
     distribution:
       percentiles-histogram:
         http.server.requests: true
       percentiles:
         http.server.requests: 0.5, 0.9, 0.95, 0.99
-      sla:
-        http.server.requests: 100ms, 500ms, 1s, 5s
+  prometheus:
+    metrics:
+      export:
+        enabled: true
 
 
 logging:
